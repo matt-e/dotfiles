@@ -15,14 +15,24 @@ plugins=(git ruby rvm ssh-agent gem svn)
 
 source $ZSH/oh-my-zsh.sh
 
-
-REPOS_ROOT=$HOME/.homesick/repos
-GLOBAL_REPO=$REPOS_ROOT/global
-SITE_REPO=$REPOS_ROOT/site
+export HOSTID=`cat $HOME/.hostid`
+export DOTFILES_ROOT=$HOME/.homesick/repos
+export GLOBAL_DOTFILES=$DOTFILES_ROOT/global
+export SITE_DOTFILES=$DOTFILES_ROOT/site/shared
+export HOST_DOTFILES=$DOTFILES_ROOT/site/$HOSTID
 
 # Globally shared prefs
-[[ -s "$GLOBAL_REPO/zsh.d/zshrc" ]] && source "$GLOBAL_REPO/zsh.d/zshrc"
+for i in $GLOBAL_DOTFILES/zsh.d/S*
+do
+    source $i
+done
 # Site-specific prefs (work, home, etc)
-[[ -s "$SITE_REPO/shared/zsh.d/zshrc" ]] && source "$SITE_REPO/shared/zsh.d/zshrc"
+for i in $SITE_DOTFILES/zsh.d/S*
+do
+    source $i
+done
 # Machine-local prefs (JAVA_HOME, etc)
-[[ -s "$SITE_REPO/`cat $HOME/.hostid`/zsh.d/zshrc" ]] && source "$SITE_REPO/`cat $HOME/.hostid`/zsh.d/zshrc"
+for i in $HOST_DOTFILES/zsh.d/S*
+do
+    source $i
+done
