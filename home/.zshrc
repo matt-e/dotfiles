@@ -1,4 +1,5 @@
-# [[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
+# Machine-specific configuration required for this to work
+[[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -14,9 +15,14 @@ plugins=(git ruby rvm ssh-agent gem svn)
 
 source $ZSH/oh-my-zsh.sh
 
+
+REPOS_ROOT=$HOME/.homesick/repos
+GLOBAL_REPO=$REPOS_ROOT/global
+SITE_REPO=$REPOS_ROOT/site
+
 # Globally shared prefs
-[[ -s "$HOME/dotfiles/global/zsh.d/zshrc" ]] && source "$HOME/dotfiles/global/zsh.d/zshrc"
+[[ -s "$GLOBAL_REPO/zsh.d/zshrc" ]] && source "$GLOBAL_REPO/zsh.d/zshrc"
 # Site-specific prefs (work, home, etc)
-[[ -s "$HOME/dotfiles/site/shared/zsh.d/zshrc" ]] && source "$HOME/dotfiles/site/shared/zsh.d/zshrc"
+[[ -s "$SITE_REPO/shared/zsh.d/zshrc" ]] && source "$SITE_REPO/shared/zsh.d/zshrc"
 # Machine-local prefs (JAVA_HOME, etc)
-[[ -s "$HOME/dotfiles/site/`cat $HOME/.hostid`/zsh.d/zshrc" ]] && source "$HOME/dotfiles/site/`cat $HOME/.hostid`/zsh.d/zshrc"
+[[ -s "$SITE_REPO/`cat $HOME/.hostid`/zsh.d/zshrc" ]] && source "$SITE_REPO/`cat $HOME/.hostid`/zsh.d/zshrc"
