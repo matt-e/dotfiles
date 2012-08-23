@@ -14,6 +14,20 @@
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;; Add in your own as you wish:
+(defvar my-packages '(col-highlight company concurrent crontab-mode ctable deferred django-theme edbi elisp-slime-nav epc find-file-in-project flymake flymake-coffee flymake-css flymake-haml flymake-ruby flymake-shell full-ack git-commit gnuplot graphviz-dot-mode haml-mode hideshowvis highlight-80+ idle-highlight-mode ido-better-flex idomenu ido-ubiquitous ido-yes-or-no inf-ruby jira json jtags jtags-extras magit mediawiki mo-git-blame monokai-theme org paredit pastels-on-dark-theme pysmell python python-mode rainbow-mode ruby-block ruby-end ruby-test-mode ruby-tools rvm smex sml-modeline smooth-scroll solarized-theme ssh-config-mode starter-kit starter-kit-bindings starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby tango-2-theme tron-theme twilight-theme vline xml-rpc yaml-mode yasnippet zenburn-theme)
+
+  "A list of packages to ensure are installed at launch.")
+
+
+
+
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
