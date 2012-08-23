@@ -1,0 +1,9 @@
+home/.emacs.d/backups
+home/.emacs.d/**/*.elc
+home/.emacs.d/elpa
+home/.emacs.d/.smex-items
+home/.emacs.d/places
+home/.emacs.d/tramp
+home/.emacs.d/url/cookies
+home/.emacs.d/abbrev_defs
+*~
