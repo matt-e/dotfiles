@@ -6,4 +6,5 @@ home/.emacs.d/places
 home/.emacs.d/tramp
 home/.emacs.d/url/cookies
 home/.emacs.d/abbrev_defs
+home/.emacs.d/session*
 *~
