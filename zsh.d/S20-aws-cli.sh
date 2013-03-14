@@ -15,6 +15,14 @@ export IAM_CLI_ROOT=$AWS_ROOT/cli/iam
 export CW_CLI_ROOT=$AWS_ROOT/cli/cloudwatch
 export EB_CLI_ROOT=$AWS_ROOT/cli/eb
 
+if [[ $HOSTID -eq "mac" ]]
+then
+    EB_CLI=$EB_CLI_ROOT/eb/macosx/python2.7
+else
+    EB_CLI=$EB_CLI_ROOT/eb/linux/python2.7
+fi
+
+
 export AMI_ALINUX_X86_64=ami-e565ba8c
 export AMI_ALINUX_I386=ami-ed65ba84
 
@@ -159,13 +167,13 @@ function use_eb_api_tools {
    newtools=`$READLINK -f $EB_CLI_ROOT/$1`
    echo "Using Elastic beanstalk tools in '$newtools'"
    export AWS_EB_HOME=$newtools
-   path_prepend $AWS_EB_HOME/eb/macosx/python2.7
+   path_prepend $EB_CLI
 }
 
 function unuse_eb_api_tools {
    local oldtools;
    oldtools=$AWS_EB_HOME
-   path_remove $oldtools/eb/macosx/python2.7
+   path_remove $EB_CLI
 }
 
 function switch_eb_api_tools {
