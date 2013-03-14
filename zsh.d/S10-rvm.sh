@@ -3,3 +3,5 @@
 
 # Add RVM to PATH for scripting
 path_append $HOME/.rvm/bin
+
+__rvm_project_rvmrc
