@@ -1,4 +1,4 @@
-if [[ $HOSTID -eq "mac" ]]
+if [[ $HOSTID == "mac" ]]
 then
     READLINK=greadlink
 else
@@ -15,7 +15,7 @@ export IAM_CLI_ROOT=$AWS_ROOT/cli/iam
 export CW_CLI_ROOT=$AWS_ROOT/cli/cloudwatch
 export EB_CLI_ROOT=$AWS_ROOT/cli/eb
 
-if [[ $HOSTID -eq "mac" ]]
+if [[ $HOSTID == "mac" ]]
 then
     EB_CLI=$EB_CLI_ROOT/eb/macosx/python2.7
 else
