@@ -43,7 +43,7 @@
  '(fci-rule-color "#eee8d5")
  '(org-agenda-custom-commands (quote (("d" todo "DELEGATED" nil) ("c" todo "DONE|DEFERRED|CANCELLED" nil) ("w" todo "WAITING" nil) ("W" agenda "" ((org-agenda-ndays 21))) ("A" agenda "" ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]"))) (org-agenda-ndays 1) (org-agenda-overriding-header "Today's Priority #A tasks: "))) ("u" alltodo "" ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote scheduled) (quote deadline) (quote regexp) "
 ]+>"))) (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
- '(org-agenda-files (quote ("~/Dropbox/org/todo.org" "~/Dropbox/org/house.org" "~/Dropbox/org/personal.org" "~/Dropbox/org/finance.org" "~/work/org/projects.org" "~/work/org/oncall.org" "~/work/org/interview.org" "~/work/org/side-tasks.org" "~/work/org/goals.org" "~/work/org/meetings.org")))
+ '(org-agenda-files (quote ("~/Dropbox/org/todo.org" "~/Dropbox/org/house.org" "~/Dropbox/org/personal.org" "~/Dropbox/org/finance.org" "~/work/org/projects.org" "~/work/org/oncall.org" "~/work/org/interview.org" "~/work/org/side-tasks.org" "~/work/org/goals.org" "~/work/org/meetings.org" "~/work/org/notes.org" "~/work/org/unfiled.org" "~/Documents/Career/career-development.org")))
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
@@ -58,6 +58,7 @@
  '(org-reverse-note-order t)
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
+ '(ruby-use-encoding-map t)
  '(sml-modeline-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -145,3 +146,15 @@
 
 (require 'rvm)
 (rvm-use-default)
+
+(require 'edit-server)
+(edit-server-start)
+
+(add-hook 'nrepl-interaction-mode-hook
+          'nrepl-turn-on-eldoc-mode)
+(setq nrepl-tab-command 'indent-for-tab-command)
+(setq nrepl-popup-stacktraces nil)
+(add-to-list 'same-window-buffer-names "*nrepl*")
+(add-hook 'nrepl-mode-hook 'subword-mode)
+(add-hook 'nrepl-mode-hook 'paredit-mode)
+(add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
