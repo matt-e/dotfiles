@@ -1,6 +1,6 @@
 if [[ $HOSTID -eq "mac" ]]
 then
-    READLINK=readlink
+    READLINK=greadlink
 else
     READLINK=readlink
 fi
@@ -13,6 +13,7 @@ export RDS_CLI_ROOT=$AWS_ROOT/cli/rds
 export EMR_CLI_ROOT=$AWS_ROOT/cli/emr
 export IAM_CLI_ROOT=$AWS_ROOT/cli/iam
 export CW_CLI_ROOT=$AWS_ROOT/cli/cloudwatch
+export EB_CLI_ROOT=$AWS_ROOT/cli/eb
 
 export AMI_ALINUX_X86_64=ami-e565ba8c
 export AMI_ALINUX_I386=ami-ed65ba84
@@ -153,6 +154,24 @@ function switch_cw_api_tools {
    use_cw_api_tools $1
 }
 
+function use_eb_api_tools {
+   local newtools;
+   newtools=`$READLINK -f $EB_CLI_ROOT/$1`
+   echo "Using Elastic beanstalk tools in '$newtools'"
+   export AWS_EB_HOME=$newtools
+   path_prepend $AWS_EB_HOME/eb/macosx/python2.7
+}
+
+function unuse_eb_api_tools {
+   local oldtools;
+   oldtools=$AWS_EB_HOME
+   path_remove $oldtools/eb/macosx/python2.7
+}
+
+function switch_eb_api_tools {
+   unuse_eb_api_tools
+   use_eb_api_tools $1
+}
 
 use_aws_creds $USER
 use_ec2_api_tools "latest"
@@ -160,3 +179,7 @@ use_rds_api_tools "latest"
 use_emr_api_tools "latest"
 use_iam_api_tools "latest"
 use_cw_api_tools "latest"
+use_eb_api_tools "latest"
+
+# For unified CLI
+export AWS_DEFAULT_REGION=us-east-1
