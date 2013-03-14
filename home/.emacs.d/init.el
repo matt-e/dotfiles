@@ -147,9 +147,6 @@
 (require 'rvm)
 (rvm-use-default)
 
-(require 'edit-server)
-(edit-server-start)
-
 (add-hook 'nrepl-interaction-mode-hook
           'nrepl-turn-on-eldoc-mode)
 (setq nrepl-tab-command 'indent-for-tab-command)
