@@ -1,3 +1,10 @@
+if [[ $HOSTID -eq "mac" ]]
+then
+    READLINK=readlink
+else
+    READLINK=readlink
+fi
+
 export AWS_ROOT=$HOME/aws
 export CREDS_ROOT=$AWS_ROOT/creds
 export CLI_ROOT=$AWS_ROOT/cli
@@ -52,7 +59,7 @@ function add_aws_creds {
 
 function use_ec2_api_tools {
    local newtools;
-   newtools=`readlink -f $EC2_CLI_ROOT/$1`
+   newtools=`$READLINK -f $EC2_CLI_ROOT/$1`
    echo "Using EC2 tools in '$newtools'"
    export EC2_HOME=$newtools
    path_prepend $EC2_HOME/bin
@@ -72,7 +79,7 @@ function switch_ec2_api_tools {
 
 function use_rds_api_tools {
    local newtools;
-   newtools=`readlink -f $RDS_CLI_ROOT/$1`
+   newtools=`$READLINK -f $RDS_CLI_ROOT/$1`
    echo "Using RDS tools in '$newtools'"
    export AWS_RDS_HOME=$newtools
    path_prepend $AWS_RDS_HOME/bin
@@ -91,7 +98,7 @@ function switch_rds_api_tools {
 
 function use_emr_api_tools {
    local newtools;
-   newtools=`readlink -f $EMR_CLI_ROOT/$1`
+   newtools=`$READLINK -f $EMR_CLI_ROOT/$1`
    echo "Using EMR tools in '$newtools'"
    export AWS_EMR_HOME=$newtools
    path_prepend $AWS_EMR_HOME
@@ -110,7 +117,7 @@ function switch_emr_api_tools {
 
 function use_iam_api_tools {
    local newtools;
-   newtools=`readlink -f $IAM_CLI_ROOT/$1`
+   newtools=`$READLINK -f $IAM_CLI_ROOT/$1`
    echo "Using IAM tools in '$newtools'"
    export AWS_IAM_HOME=$newtools
    path_prepend $AWS_IAM_HOME/bin
@@ -129,7 +136,7 @@ function switch_iam_api_tools {
 
 function use_cw_api_tools {
    local newtools;
-   newtools=`readlink -f $CW_CLI_ROOT/$1`
+   newtools=`$READLINK -f $CW_CLI_ROOT/$1`
    echo "Using Cloudwatch tools in '$newtools'"
    export AWS_CLOUDWATCH_HOME=$newtools
    path_prepend $AWS_CLOUDWATCH_HOME/bin
