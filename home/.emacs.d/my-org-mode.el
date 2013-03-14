@@ -53,6 +53,9 @@
                             "~/work/org/side-tasks.org"
                             "~/work/org/goals.org"
                             "~/work/org/meetings.org"
+                            "~/work/org/notes.org"
+                            "~/work/org/unfiled.org"
+                            "~/Documents/Career/career-development.org"
                             )))
 
  '(org-default-notes-file "~/Dropbox/org/notes.org")
