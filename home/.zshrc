@@ -10,11 +10,6 @@ ZSH_THEME="fino"
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git ruby rvm ssh-agent gem svn)
-
-source $ZSH/oh-my-zsh.sh
-
 export HOSTID=`cat $HOME/.hostid`
 export DOTFILES_ROOT=$HOME/.homesick/repos
 export GLOBAL_DOTFILES=$DOTFILES_ROOT/global
@@ -36,3 +31,8 @@ for i in $HOST_DOTFILES/zsh.d/S*
 do
     source $i
 done
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+plugins=(git ruby rvm ssh-agent gem svn fasd)
+
+source $ZSH/oh-my-zsh.sh

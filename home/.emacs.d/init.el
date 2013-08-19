@@ -2,6 +2,8 @@
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
 ;; Load path etc.
@@ -56,6 +58,7 @@
  '(org-remember-templates (quote ((116 "* TODO %?
   %u" "~/work/org/unfiled.org" "Tasks") (110 "* %u %?" "~/work/org/notes.org" "Notes"))))
  '(org-reverse-note-order t)
+ '(pandoc-binary "/usr/local/bin/pandoc")
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
  '(ruby-use-encoding-map t)
@@ -65,7 +68,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#211D1D" :foreground "#DADADA" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "unknown" :family "Inconsolata"))))
+ '(default ((t (:inherit nil :stipple nil :background "#211D1D" :foreground "#DADADA" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "apple" :family "Inconsolata"))))
  '(mumamo-background-chunk-major ((t nil)))
  '(mumamo-background-chunk-submode1 ((t nil))))
 
@@ -89,6 +92,12 @@
 	       (lambda (arg) (ruby-end-of-block)) nil))
 
 
+;; Python Hook
+(add-hook 'python-mode-hook
+          (function (lambda ()
+                      (setq indent-tabs-mode nil
+                            tab-width 2))))
+
 (global-set-key (kbd "C-+") 'toggle-hiding)
 (global-set-key (kbd "C-\\") 'toggle-selective-display)
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
@@ -96,6 +105,7 @@
 (add-hook 'java-mode-hook       'hs-minor-mode)
 (add-hook 'lisp-mode-hook       'hs-minor-mode)
 (add-hook 'perl-mode-hook       'hs-minor-mode)
+(add-hook 'python-mode-hook         'hs-minor-mode)
 (add-hook 'sh-mode-hook         'hs-minor-mode)
 (add-hook 'ruby-mode-hook         'hs-minor-mode)
 
@@ -155,3 +165,4 @@
 (add-hook 'nrepl-mode-hook 'subword-mode)
 (add-hook 'nrepl-mode-hook 'paredit-mode)
 (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'markdown-mode-hook 'turn-on-pandoc)
