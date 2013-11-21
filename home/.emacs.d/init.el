@@ -56,19 +56,20 @@
  '(org-fast-tag-selection-single-key (quote expert))
  '(org-remember-store-without-prompt t)
  '(org-remember-templates (quote ((116 "* TODO %?
-  %u" "~/work/org/unfiled.org" "Tasks") (110 "* %u %?" "~/work/org/notes.org" "Notes"))))
+  %u" "~/work/org/unfiled.org" "Unfiled Tasks") (110 "* %u %?" "~/work/org/notes.org" "Notes"))))
  '(org-reverse-note-order t)
  '(pandoc-binary "/usr/local/bin/pandoc")
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
  '(ruby-use-encoding-map t)
+ '(safe-local-variable-values (quote ((Coding . utf-8) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby") (whitespace-line-column . 80) (lexical-binding . t))))
  '(sml-modeline-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#211D1D" :foreground "#DADADA" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "apple" :family "Inconsolata"))))
+ '(default ((t (:inherit nil :stipple nil :background "#042028" :foreground "#708183" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Monaco"))))
  '(mumamo-background-chunk-major ((t nil)))
  '(mumamo-background-chunk-submode1 ((t nil))))
 
@@ -123,6 +124,7 @@
 (add-hook 'ruby-mode-hook
           '(lambda ()
              (ruby-block-mode t)
+             (setq ruby-block-highlight-toggle t)
              ))
 
 (load "my-org-mode.el")
@@ -166,3 +168,24 @@
 (add-hook 'nrepl-mode-hook 'paredit-mode)
 (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'markdown-mode-hook 'turn-on-pandoc)
+
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+(eval-after-load "haskell-mode"
+  '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+
+(eval-after-load "haskell-cabal"
+  '(define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+
+(setq powerline-color1 "#073642")
+(setq powerline-color2 "#002b36")
+
+(set-face-attribute 'mode-line nil
+                    :foreground "#fdf6e3"
+                    :background "#2aa198"
+                    :inverse-video nil
+                    :box nil)
+(set-face-attribute 'mode-line-inactive nil
+                    :inverse-video nil
+                    :box nil)
