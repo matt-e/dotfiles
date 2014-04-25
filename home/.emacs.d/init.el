@@ -3,7 +3,8 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
-  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
 (package-initialize)
 
 ;; Load path etc.
@@ -20,7 +21,7 @@
   (package-refresh-contents))
 
 ;; Add in your own as you wish:
-(defvar my-packages '(col-highlight company concurrent crontab-mode ctable deferred django-theme edbi elisp-slime-nav epc find-file-in-project flymake flymake-coffee flymake-css flymake-haml flymake-ruby flymake-shell full-ack git-commit gnuplot graphviz-dot-mode haml-mode hideshowvis highlight-80+ idle-highlight-mode ido-better-flex idomenu ido-ubiquitous ido-yes-or-no inf-ruby jira json jtags jtags-extras magit mediawiki mo-git-blame monokai-theme org paredit pastels-on-dark-theme pysmell python python-mode rainbow-mode ruby-block ruby-end ruby-test-mode ruby-tools rvm smex sml-modeline smooth-scroll solarized-theme ssh-config-mode starter-kit starter-kit-bindings starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby tango-2-theme tron-theme twilight-theme vline xml-rpc yaml-mode yasnippet zenburn-theme exec-path-from-shell)
+(defvar my-packages '(col-highlight company concurrent crontab-mode ctable deferred django-theme edbi elisp-slime-nav epc find-file-in-project flymake flymake-coffee flymake-css flymake-haml flymake-ruby flymake-shell full-ack git-commit gnuplot graphviz-dot-mode haml-mode hideshowvis highlight-80+ idle-highlight-mode ido-better-flex idomenu ido-ubiquitous ido-yes-or-no inf-ruby jira json jtags jtags-extras magit mediawiki mo-git-blame monokai-theme org paredit pastels-on-dark-theme pysmell python python-mode rainbow-mode ruby-block ruby-end ruby-test-mode ruby-tools rvm smex sml-modeline smooth-scroll solarized-theme ssh-config-mode starter-kit starter-kit-bindings starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby tango-2-theme tron-theme twilight-theme vline xml-rpc yaml-mode yasnippet zenburn-theme exec-path-from-shell scala-mode2)
 
   "A list of packages to ensure are installed at launch.")
 
@@ -40,8 +41,8 @@
  '(ansi-color-names-vector [solarized-bg red green yellow blue magenta cyan solarized-fg])
  '(coffee-tab-width 2)
  '(column-number-mode t)
- '(custom-enabled-themes (quote (pastels-on-dark)))
- '(custom-safe-themes (quote ("5e6e19e4edeaa54ebc72430fcc25f0d0cec896a952c8b89dabcd214d1970c97a" "71b172ea4aad108801421cc5251edb6c792f3adbaecfa1c52e94e3d99634dee7" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" "72cc9ae08503b8e977801c6d6ec17043b55313cda34bcf0e6921f2f04cf2da56" "d2622a2a2966905a5237b54f35996ca6fda2f79a9253d44793cfe31079e3c92b" "501caa208affa1145ccbb4b74b6cd66c3091e41c5bb66c677feda9def5eab19c" "d99134e7de58b8035aeaf094bf72c7ddb809eaf57a7cb370d00c1026dcca07aa" "36afe64261e1de73fcfadedf154e4bc2c9ec1969bde0c21798d31366897bc4d2" "30fe7e72186c728bd7c3e1b8d67bc10b846119c45a0f35c972ed427c45bacc19" default)))
+ '(custom-enabled-themes (quote (monokai-theme solarized-dark)))
+ '(custom-safe-themes (quote ("99cbc2aaa2b77374c2c06091494bd9d2ebfe6dc5f64c7ccdb36c083aff892f7d" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "5e6e19e4edeaa54ebc72430fcc25f0d0cec896a952c8b89dabcd214d1970c97a" "71b172ea4aad108801421cc5251edb6c792f3adbaecfa1c52e94e3d99634dee7" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" "72cc9ae08503b8e977801c6d6ec17043b55313cda34bcf0e6921f2f04cf2da56" "d2622a2a2966905a5237b54f35996ca6fda2f79a9253d44793cfe31079e3c92b" "501caa208affa1145ccbb4b74b6cd66c3091e41c5bb66c677feda9def5eab19c" "d99134e7de58b8035aeaf094bf72c7ddb809eaf57a7cb370d00c1026dcca07aa" "36afe64261e1de73fcfadedf154e4bc2c9ec1969bde0c21798d31366897bc4d2" "30fe7e72186c728bd7c3e1b8d67bc10b846119c45a0f35c972ed427c45bacc19" default)))
  '(fci-rule-color "#eee8d5")
  '(org-agenda-custom-commands (quote (("d" todo "DELEGATED" nil) ("c" todo "DONE|DEFERRED|CANCELLED" nil) ("w" todo "WAITING" nil) ("W" agenda "" ((org-agenda-ndays 21))) ("A" agenda "" ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]"))) (org-agenda-ndays 1) (org-agenda-overriding-header "Today's Priority #A tasks: "))) ("u" alltodo "" ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote scheduled) (quote deadline) (quote regexp) "
 ]+>"))) (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
@@ -63,15 +64,18 @@
  '(remember-handler-functions (quote (org-remember-handler)))
  '(ruby-use-encoding-map t)
  '(safe-local-variable-values (quote ((Coding . utf-8) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby") (whitespace-line-column . 80) (lexical-binding . t))))
+ '(scala-indent:align-forms t)
+ '(scala-indent:align-parameters t)
+ '(scala-indent:default-run-on-strategy 1)
+ '(scalable-fonts-allowed t)
  '(sml-modeline-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#042028" :foreground "#708183" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "apple" :family "Monaco"))))
- '(mumamo-background-chunk-major ((t nil)))
- '(mumamo-background-chunk-submode1 ((t nil))))
+ '(mumamo-background-chunk-major ((t nil)) t)
+ '(mumamo-background-chunk-submode1 ((t nil)) t))
 
 
 ;; Clean up perl formatting
@@ -149,7 +153,7 @@
      (eval-print-last-sexp))))
 
 (el-get 'sync)
-(require 'sr-speedbar)
+;; (require 'sr-speedbar)
 (require 'smooth-scrolling)
 (require 'mediawiki)
 
@@ -189,3 +193,10 @@
 (set-face-attribute 'mode-line-inactive nil
                     :inverse-video nil
                     :box nil)
+
+(add-hook 'server-switch-hook
+          (lambda ()
+            (when (current-local-map)
+              (use-local-map (copy-keymap (current-local-map))))
+            (when server-buffer-clients
+              (local-set-key (kbd "C-x k") 'server-edit))))
