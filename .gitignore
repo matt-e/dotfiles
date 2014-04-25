@@ -10,3 +10,4 @@ home/.emacs.d/session*
 home/.emacs.d/el-get
 home/.emacs.d/bookmarks
 home/.emacs.d/auto-save-list
+/home/.emacs.d/eshell/history
