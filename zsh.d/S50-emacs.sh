@@ -1,3 +1,3 @@
-export ALTERNATE_EDITOR=emacs
-export EDITOR="emacsclient -c"
-export VISUAL="emacsclient -c"
+export ALTERNATE_EDITOR=emacsclient
+export EDITOR=emacsclient
+export VISUAL=emacsclient

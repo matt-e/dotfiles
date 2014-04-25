@@ -200,3 +200,7 @@
               (use-local-map (copy-keymap (current-local-map))))
             (when server-buffer-clients
               (local-set-key (kbd "C-x k") 'server-edit))))
+
+
+; Work around a bug in magit
+(set-variable 'magit-emacsclient-executable "/usr/local/bin/emacsclient")
