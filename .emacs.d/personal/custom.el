@@ -11,7 +11,7 @@
      (c++-mode . "stroustrup")
      (java-mode . "java")
      (awk-mode . "awk")
-     (other . "gnu"))))
+     (other . "k&r"))))
  '(custom-enabled-themes (quote (deeper-blue)))
  '(custom-safe-themes
    (quote
@@ -20,6 +20,9 @@
  '(erc-fill-mode t)
  '(fci-rule-color "#383838")
  '(fill-column 120)
+ '(nrepl-message-colors
+   (quote
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(nxml-attribute-indent 2)
  '(nxml-child-indent 2)
  '(org-agenda-columns-add-appointments-to-effort-sum t)
@@ -68,6 +71,16 @@
       (file+datetree "~/Documents/org/journal.org" "Journal")
       "* %?
   %t
+  %i")
+     ("r" "Review notes" entry
+      (file+datetree "~/Documents/org/review-notes.org" "Review notes")
+      "* %?
+  %t
+  %i")
+     ("p" "Project ideas" entry
+      (file+datetree "~/Documents/org/project-ideas.org" "Project ideas")
+      "* %?
+  %t
   %i"))))
  '(org-columns-default-format
    "%38ITEM(Details) %TAGS(Context) %7TODO(To Do) %3PRIORITY %10Effort(Time){:} %6CLOCKSUM{Total}")
@@ -103,6 +116,7 @@
     ((sequence "TODO(t)" "STARTED(s@/!)" "WAITING(w@/!)" "DELEGATED(e@/!)" "APPT(@!)" "|" "DONE(d!)" "DEFERRED" "CANCELLED(c@)"))))
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
+ '(safe-local-variable-values (quote ((vcl-indent-level . 2))))
  '(send-mail-function (quote mailclient-send-it))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
