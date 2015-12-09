@@ -13,3 +13,4 @@ home/.emacs.d/auto-save-list
 /home/.emacs.d/eshell/history
 /home/.emacs.d/ido.last
 /home/.emacs.d/recentf
+*.el~
