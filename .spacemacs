@@ -230,8 +230,12 @@ layers configuration. You are free to put any user code."
    (quote
     ("~/Documents/org/" "~/Dropbox/org/" "~/Documents/org/scheduled/" "~/Documents/org/cm/")))
  '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-deadline-prewarning-if-scheduled t)
  '(org-agenda-skip-scheduled-if-deadline-is-shown t)
  '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-tags-todo-honor-ignore-options t)
+ '(org-agenda-todo-ignore-scheduled (quote future))
+ '(org-agenda-todo-ignore-timestamp (quote all))
  '(org-capture-templates
    (quote
     (("j" "Journal" entry
@@ -239,22 +243,21 @@ layers configuration. You are free to put any user code."
       "* %?
 %t
 %i")
-    ("r" "Review notes" entry
-     (file+headline "~/Documents/org/review-notes.org" "Review notes")
-            "* %t %?
+     ("r" "Review notes" entry
+      (file+headline "~/Documents/org/review-notes.org" "Review notes")
+      "* %t %?
        %t
        %i")
      ("p" "Project ideas" entry
       (file+headline "~/Documents/org/project-ideas.org" "Project ideas")
-             "* %?
+      "* %?
         %t
         %i")
      ("t" "Todo" entry
       (file+headline "~/Documents/org/unfiled.org" "Unfiled tasks")
-                "* TODO %?
+      "* TODO %?
           %t
-          %i")
-    )))
+          %i"))))
  '(org-directory "~/Documents/org")
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 5))))
  '(org-todo-interpretation (quote type))
