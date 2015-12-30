@@ -22,3 +22,5 @@ zstyle :omz:plugins:ssh-agent agent-forwarding on
 plugins=(git ruby rvm ssh-agent gem svn fasd virtualenvwrapper virtualenv)
 
 source $ZSH/oh-my-zsh.sh
+
+test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
