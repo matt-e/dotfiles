@@ -19,7 +19,7 @@ done
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git ruby rvm ssh-agent gem svn fasd virtualenvwrapper virtualenv)
+plugins=(git ruby rvm ssh-agent gem svn fasd)
 
 source $ZSH/oh-my-zsh.sh
 
