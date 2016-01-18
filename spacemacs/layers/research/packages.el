@@ -9,7 +9,8 @@
     hydra
     key-chord
     interleave
-    org-ref))
+    org-ref
+    ebib))
 
 (defvar research-excluded-packages '())
 
@@ -19,7 +20,7 @@
     :commands helm-bibtex
     :init
     (progn
-      (spacemacs/set-leader-keys "or" 'helm-bibtex))
+      (evil-leader/set-key "or" 'helm-bibtex))
     :config
     (progn
       (setq helm-bibtex-bibliography "~/Dropbox/Papers/bibliography.bib")
@@ -74,7 +75,12 @@
     :defer t))
 
 (defun research/init-interleave ()
-  (use-package key-chord
+  (use-package interleave
     :commands interleave
+    :defer t
+    ))
+
+(defun research/init-ebib ()
+  (use-package ebib
     :defer t
     ))

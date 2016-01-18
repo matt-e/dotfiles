@@ -48,13 +48,16 @@ values."
      rust
      yaml
      sql
+     haskell
      javascript
      eyebrowse
      my-host-config
      lua
      office
+     research
      dockerfile
      dash
+     personal
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -253,17 +256,26 @@ layers configuration. You are free to put any user code."
        %t
        %i")
      ("p" "Project ideas" entry
-      (file+headline "~/Documents/org/project-ideas.org" "Project ideas")
+      (file+headline "~/Documents/org/project-ideas.org" "Ideas")
       "* %?
-        %t
         %i")
      ("t" "Todo" entry
       (file+headline "~/Documents/org/unfiled.org" "Unfiled tasks")
       "* TODO %?
           %t
-          %i"))))
+          %i")
+     ("n" "Note" entry
+      (file+headline "~/Documents/org/notes.org" "Notes")
+      "* %?
+  %t
+  %i")
+     ("s" "Shopping list" entry
+      (file+headline "~/Dropbox/org/shopping.org" "Shopping")
+      "* %?
+%i"))))
  '(org-directory "~/Documents/org")
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 5))))
+ '(org-refile-use-outline-path nil)
  '(org-todo-interpretation (quote type))
  '(org-todo-keywords
    (quote
