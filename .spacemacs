@@ -279,7 +279,8 @@ layers configuration. You are free to put any user code."
  '(org-todo-interpretation (quote type))
  '(org-todo-keywords
    (quote
-    ((sequence "TODO(t)" "STARTED(s@/!)" "WAITING(w@/!)" "DELEGATED(e@/!)" "APPT(@!)" "|" "DONE(d!)" "DEFERRED" "CANCELLED(c@)")))))
+    ((sequence "TODO(t)" "STARTED(s@/!)" "WAITING(w@/!)" "DELEGATED(e@/!)" "APPT(@!)" "|" "DONE(d!)" "DEFERRED" "CANCELLED(c@)"))))
+ '(reftex-default-bibliography (quote ("~/Dropbox/Papers/bibliography"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
