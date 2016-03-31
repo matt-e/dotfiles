@@ -5,37 +5,17 @@ else
     READLINK=readlink
 fi
 
-export AWS_ROOT=$HOME/aws
-export CREDS_ROOT=$AWS_ROOT/creds
-export CLI_ROOT=$AWS_ROOT/cli
-export EC2_CLI_ROOT=$AWS_ROOT/cli/ec2
-export RDS_CLI_ROOT=$AWS_ROOT/cli/rds
-export EMR_CLI_ROOT=$AWS_ROOT/cli/emr
-export IAM_CLI_ROOT=$AWS_ROOT/cli/iam
-export CW_CLI_ROOT=$AWS_ROOT/cli/cloudwatch
-export EB_CLI_ROOT=$AWS_ROOT/cli/eb
-
-if [[ $HOSTID == "mac" ]]
-then
-    EB_CLI=$EB_CLI_ROOT/eb/macosx/python2.7
-else
-    EB_CLI=$EB_CLI_ROOT/eb/linux/python2.7
-fi
-
-
-export AMI_ALINUX_X86_64=ami-e565ba8c
-export AMI_ALINUX_I386=ami-ed65ba84
+AWS_ROOT=$HOME/aws
+CREDS_ROOT=$AWS_ROOT/creds
 
 function use_aws_creds {
     local creds;
-    creds=$CREDS_ROOT/$1
-    echo "Using AWS credentials for user '$1' from $creds"
+    creds=$CREDS_ROOT/$1    
+    echo "Using AWS credentials for '$1'"
     EC2_CERT=$creds/cert.pem
     EC2_PRIVATE_KEY=$creds/pk.pem
     AWS_ACCESS_KEY=`cat $creds/aws_access_key`
     AWS_SECRET_KEY=`cat $creds/aws_secret_key`
-    ELASTIC_MAPREDUCE_ACCESS_ID=`cat $creds/aws_access_key`
-    ELASTIC_MAPREDUCE_PRIVATE_KEY=`cat $creds/aws_secret_key`
 
     AWS_CREDENTIAL_FILE=$CREDS_ROOT/.tmp/$$-aws_credential_file
     echo "AWSAccessKeyId=`cat $creds/aws_access_key`" > $AWS_CREDENTIAL_FILE
@@ -47,9 +27,6 @@ function use_aws_creds {
     export EC2_PRIVATE_KEY
     export AWS_ACCESS_KEY
     export AWS_SECRET_KEY
-    export ELASTIC_MAPREDUCE_ACCESS_ID
-    export ELASTIC_MAPREDUCE_PRIVATE_KEY
-
     export AWS_CREDENTIAL_FILE
 }
 
@@ -65,129 +42,8 @@ function add_aws_creds {
     echo "Added AWS credentials for user '$1' at $creds"
 }
 
-
-function use_ec2_api_tools {
-   local newtools;
-   newtools=`$READLINK -f $EC2_CLI_ROOT/$1`
-   echo "Using EC2 tools in '$newtools'"
-   export EC2_HOME=$newtools
-   path_prepend $EC2_HOME/bin
-}
-
-function unuse_ec2_api_tools {
-   local oldtools;
-   oldtools=$EC2_HOME
-   path_remove $oldtools/bin
-   unset $EC2_HOME
-}
-
-function switch_ec2_api_tools {
-   unuse_ec2_api_tools
-   use_ec2_api_tools $1
-}
-
-function use_rds_api_tools {
-   local newtools;
-   newtools=`$READLINK -f $RDS_CLI_ROOT/$1`
-   echo "Using RDS tools in '$newtools'"
-   export AWS_RDS_HOME=$newtools
-   path_prepend $AWS_RDS_HOME/bin
-}
-
-function unuse_rds_api_tools {
-   local oldtools;
-   oldtools=$AWS_RDS_HOME
-   path_remove $oldtools/bin
-}
-
-function switch_rds_api_tools {
-   unuse_rds_api_tools
-   use_rds_api_tools $1
-}
-
-function use_emr_api_tools {
-   local newtools;
-   newtools=`$READLINK -f $EMR_CLI_ROOT/$1`
-   echo "Using EMR tools in '$newtools'"
-   export AWS_EMR_HOME=$newtools
-   path_prepend $AWS_EMR_HOME
-}
-
-function unuse_emr_api_tools {
-   local oldtools;
-   oldtools=$AWS_EMR_HOME
-   path_remove $oldtools
-}
-
-function switch_emr_api_tools {
-   unuse_emr_api_tools
-   use_emr_api_tools $1
-}
-
-function use_iam_api_tools {
-   local newtools;
-   newtools=`$READLINK -f $IAM_CLI_ROOT/$1`
-   echo "Using IAM tools in '$newtools'"
-   export AWS_IAM_HOME=$newtools
-   path_prepend $AWS_IAM_HOME/bin
-}
-
-function unuse_iam_api_tools {
-   local oldtools;
-   oldtools=$AWS_IAM_HOME
-   path_remove $oldtools
-}
-
-function switch_iam_api_tools {
-   unuse_iam_api_tools
-   use_iam_api_tools $1
-}
-
-function use_cw_api_tools {
-   local newtools;
-   newtools=`$READLINK -f $CW_CLI_ROOT/$1`
-   echo "Using Cloudwatch tools in '$newtools'"
-   export AWS_CLOUDWATCH_HOME=$newtools
-   path_prepend $AWS_CLOUDWATCH_HOME/bin
-}
-
-function unuse_cw_api_tools {
-   local oldtools;
-   oldtools=$AWS_CLOUDWATCH_HOME
-   path_remove $oldtools/bin
-}
-
-function switch_cw_api_tools {
-   unuse_cw_api_tools
-   use_cw_api_tools $1
-}
-
-function use_eb_api_tools {
-   local newtools;
-   newtools=`$READLINK -f $EB_CLI_ROOT/$1`
-   echo "Using Elastic beanstalk tools in '$newtools'"
-   export AWS_EB_HOME=$newtools
-   path_prepend $EB_CLI
-}
-
-function unuse_eb_api_tools {
-   local oldtools;
-   oldtools=$AWS_EB_HOME
-   path_remove $EB_CLI
-}
-
-function switch_eb_api_tools {
-   unuse_eb_api_tools
-   use_eb_api_tools $1
-}
-
-use_aws_creds $USER
-use_ec2_api_tools "latest"
-use_rds_api_tools "latest"
-use_emr_api_tools "latest"
-use_iam_api_tools "latest"
-use_cw_api_tools "latest"
-use_eb_api_tools "latest"
+local default_creds=$(basename $($READLINK $CREDS_ROOT/default))
+use_aws_creds $default_creds
 
 # For unified CLI
-export AWS_DEFAULT_REGION=us-east-1
+export AWS_DEFAULT_REGION=us-west-2

@@ -58,6 +58,7 @@ values."
      dockerfile
      dash
      personal
+     rtags
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -232,6 +233,13 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(c-basic-offset 4)
+ '(c-default-style
+   (quote
+    ((c++-mode . "linux")
+     (java-mode . "java")
+     (awk-mode . "awk")
+     (other . "gnu"))))
  '(org-agenda-columns-add-appointments-to-effort-sum t)
  '(org-agenda-files
    (quote
@@ -272,6 +280,11 @@ layers configuration. You are free to put any user code."
      ("s" "Shopping list" entry
       (file+headline "~/Dropbox/org/shopping.org" "Shopping")
       "* %?
+%i")
+     ("l" "TIL" entry
+      (file+datetree "~/Documents/org/til.org")
+      "* %?
+%t
 %i"))))
  '(org-directory "~/Documents/org")
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 5))))
