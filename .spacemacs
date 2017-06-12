@@ -64,7 +64,9 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(
+                                      visual-fill-column
+                                      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -224,6 +226,9 @@ user code."
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   (evil-leader/set-key "," 'org-capture)
+  (setq visual-fill-column-width 120)
+  (add-hook 'visual-line-mode-hook (lambda ()
+                                     (visual-fill-column-mode)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
