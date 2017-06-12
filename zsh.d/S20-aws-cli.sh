@@ -42,8 +42,12 @@ function add_aws_creds {
     echo "Added AWS credentials for user '$1' at $creds"
 }
 
-local default_creds=$(basename $($READLINK $CREDS_ROOT/default))
-use_aws_creds $default_creds
+function use_default_creds {
+    local default_creds=$(basename $($READLINK $CREDS_ROOT/default))
+    [ -d $default_creds ] && use_aws_creds $default_creds
+}
+
+[ -d $CREDS_ROOT ] && use_default_creds
 
 # For unified CLI
 export AWS_DEFAULT_REGION=us-west-2

@@ -1,0 +1,5 @@
+# -*- sh -*-
+
+export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+export ANDROID_NDK_HOME=/usr/local/opt/android-ndk/android-ndk-r14b
+export ANDROID_HOME=$ANDROID_SDK_ROOT
