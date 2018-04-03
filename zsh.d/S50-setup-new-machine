@@ -1,0 +1,27 @@
+# -*- sh -*-
+
+function setup_new_machine {
+    set -x
+
+    local working=$HOME/tmp/setup
+    mkdir -p $working
+    pushd $working
+
+    echo "Installing Homebrew"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    echo "Installing emacs"
+    brew install emacs-mac --with-modules --with-spacemacs-icon --with-xml2
+
+    echo "Installing iterm2"
+    brew cask install iterm2
+
+    echo "Installing powerline fonts"
+    git clone https://github.com/powerline/fonts
+    pushd fonts
+    ./install.sh
+    popd
+
+    popd
+    rm -Rf $working
+}

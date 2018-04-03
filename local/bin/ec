@@ -1,0 +1,8 @@
+#!/bin/bash
+
+visible=$(emacsclient -e '(<= 2 (length (visible-frame-list)))')
+if [[ $visible =~ "nil" ]]; then
+    emacsclient -c -n
+fi
+
+emacsclient -n "$@"

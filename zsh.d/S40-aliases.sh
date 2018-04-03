@@ -1,4 +1,3 @@
-alias magit="emacs -nw -f magit-status"
-alias ec="emacsclient"
+# -*- sh -*-
 
-export EDITOR=emacsclient
+alias ls="exa"
