@@ -2,6 +2,6 @@
 
 for i in $HOME/zsh.d/S*
 do
-  echo "Loading $i"
+  # DEBUG: echo "Loading $i"
   source $i
 done
