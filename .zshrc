@@ -67,8 +67,6 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 ENHANCD_DISABLE_DOT=1
 ENHANCD_FILTER=fzy
 
-# SSH identities
-zstyle :plugins:ssh-agent identities id_ecdsa_devicelab id_rsa_gce id_rsa_github id_rsa_devicelab id_rsa_qaworkstation
 # Case-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
 
@@ -112,5 +110,8 @@ source /usr/local/Cellar/fzf/0.17.1/shell/key-bindings.zsh
 source /usr/local/Cellar/fzf/0.17.1/shell/completion.zsh
 #bindkey '^R' zaw-history
 #bindkey '^xW' zaw-widgets
+
+# export GPG_TTY=$(tty)
+eval `keychain --lockwait 86400 --agents gpg,ssh --eval id_ecdsa_devicelab google_compute_engine id_rsa_github id_rsa_devicelab 3EFF9A2745D4EF21`
 
 . ${HOME}/zsh.d/zshrc
