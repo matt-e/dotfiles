@@ -94,6 +94,7 @@ zplug "supercrabtree/k"
 zplug "plugins/gradle", from:oh-my-zsh
 zplug "zuxfoucault/colored-man-pages_mod"
 zplug "littleq0903/gcloud-zsh-completion", use:src
+zplug "superbrothers/zsh-kubectl-prompt"
 
 # Theme
 zplug "retroalgic/aplos", as:theme
@@ -102,6 +103,7 @@ zplug "retroalgic/aplos", as:theme
 zplug check || zplug install
 zplug load # --verbose
 
+RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
 export FZF_DEFAULT_COMMAND='(git ls-tree -r --name-only HEAD || rg --files) 2> /dev/null'
 export FZF_CTRL_T_COMMAND='rg --files'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || safecat {} || tree -C {}) 2> /dev/null | head -200'"
