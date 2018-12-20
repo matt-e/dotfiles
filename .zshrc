@@ -108,8 +108,8 @@ export FZF_DEFAULT_COMMAND='(git ls-tree -r --name-only HEAD || rg --files) 2> /
 export FZF_CTRL_T_COMMAND='rg --files'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || safecat {} || tree -C {}) 2> /dev/null | head -200'"
 
-source /usr/local/Cellar/fzf/0.17.1/shell/key-bindings.zsh
-source /usr/local/Cellar/fzf/0.17.1/shell/completion.zsh
+source /usr/local/Cellar/fzf/0.17.3/shell/key-bindings.zsh
+source /usr/local/Cellar/fzf/0.17.3/shell/completion.zsh
 #bindkey '^R' zaw-history
 #bindkey '^xW' zaw-widgets
 
