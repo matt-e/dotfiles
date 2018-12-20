@@ -21,7 +21,7 @@
 (setq package-archives '(("org"   . "https://orgmode.org/elpa/")
 			 ("gnu"   . "https://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
-(package-initialize)
+(unless package--initialized (package-initialize t))
 
 ;; Bootstrap `use-package`
 (unless (package-installed-p 'use-package)
@@ -440,7 +440,7 @@
   :init (add-hook 'java-mode-hook #'lsp-java-enable))
 
 
-;; Elisp
+;; elisp
 (use-package
   elisp-format
   :ensure t
@@ -480,23 +480,5 @@
 										before-init-time)))
 		     gcs-done)))
 
-;; Auto-generated
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "6d589ac0e52375d311afaa745205abb6ccb3b21f6ba037104d71111e7e76a3fc" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "f0dc4ddca147f3c7b1c7397141b888562a48d9888f1595d69572db73be99a024" default)))
- '(fill-column 120)
- '(org-agenda-files (quote ("~/Documents/org/")))
- '(package-selected-packages
-   (quote
-    (visual-fill-column dashboard doom-modeline kotlin-mode kotlin flycheck-kotlin helm-descbinds helm-deskbinds try mwim emacs-async elisp-format helm-swoop treemacs-projectile treemacs smartparens crux ws-butler magit ivy eglot go-mode go-projectile rust-mode spaceline company flycheck helm-projectile projectile helm-rg helm doom-themes anzu use-package general))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
