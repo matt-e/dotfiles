@@ -1,0 +1,11 @@
+# -*- sh -*-
+
+export FZF_DEFAULT_COMMAND='(git ls-tree -r --name-only HEAD || rg --files) 2> /dev/null'
+export FZF_CTRL_T_COMMAND='rg --files'
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || safecat {} || tree -C {}) 2> /dev/null | head -200'"
+
+FZF_ROOT=/usr/local/Cellar/fzf/0.17.1/shell
+[ -d /usr/share/fzf ] && FZF_ROOT=/usr/share/fzf
+
+source ${FZF_ROOT}/key-bindings.zsh
+source ${FZF_ROOT}/completion.zsh

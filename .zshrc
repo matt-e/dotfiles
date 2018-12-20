@@ -104,14 +104,6 @@ zplug check || zplug install
 zplug load # --verbose
 
 RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
-export FZF_DEFAULT_COMMAND='(git ls-tree -r --name-only HEAD || rg --files) 2> /dev/null'
-export FZF_CTRL_T_COMMAND='rg --files'
-export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || safecat {} || tree -C {}) 2> /dev/null | head -200'"
-
-source /usr/local/Cellar/fzf/0.17.3/shell/key-bindings.zsh
-source /usr/local/Cellar/fzf/0.17.3/shell/completion.zsh
-#bindkey '^R' zaw-history
-#bindkey '^xW' zaw-widgets
 
 # export GPG_TTY=$(tty)
 eval `keychain --lockwait 86400 --agents gpg,ssh --eval id_ecdsa_devicelab google_compute_engine id_rsa_github id_rsa_devicelab 3EFF9A2745D4EF21`
