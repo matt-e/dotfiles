@@ -1,0 +1,16 @@
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[alias]
+
+	d = diff
+	ds = diff --stat
+	dc = diff --cached
+	dlc = diff --cached HEAD^
+
+	s = status -s
+	b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+	l = log --pretty=format:"%C(cyan)%h\\ %Cgreen%ad%C(yellow)%d\\ %Creset%s%Cblue\\ [%an]" --decorate --date=relative
+
+	lg = log --graph --pretty=format:'%C(cyan)%h %Cgreen%ad %C(yellow)%d%Creset %s %C(blue)[%an]%Creset' --abbrev-commit --date=relative --all
