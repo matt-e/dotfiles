@@ -1,4 +1,3 @@
-
 ;; Startup optimization - set GC threshold high
 (setq gc-cons-threshold-original gc-cons-threshold)
 (setq gc-cons-threshold (* 1024 1024 100))
@@ -14,38 +13,51 @@
 		       (makunbound 'file-name-handler-alist-original)
 		       (message "gc-cons-threshold and file-name-handler-alist restored")))
 
-;; Regular init starts here
+;; regular init starts here
 
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("org"   . "https://orgmode.org/elpa/")
-			 ("gnu"   . "https://elpa.gnu.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/")))
-(unless package--initialized (package-initialize t))
+;; Fix MacOS CMD/OPTION keys
+;; Binds meta to ALT
+(when (equal system-type 'darwin)
+  (setq mac-option-modifier 'meta))
 
-;; Bootstrap `use-package`
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
+(defvar bootstrap-version)
+(let ((bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el"
+					user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer (url-retrieve-synchronously
+			  "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el" 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; Enable async compilation for use-package
-(async-bytecomp-package-mode 1)
+(setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
+
+;; prefer utf8 encoding
+(prefer-coding-system 'utf-8)
+
+;;; store all backup and autosave files in the tmp dir
+;;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
+(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;; enable async compilation for use-package
+(use-package
+  async
+  :config (async-bytecomp-package-mode 1))
 
 ;; PATH
 (let ((path (shell-command-to-string ". ~/.profile; echo -n $PATH")))
   (setenv "PATH" path)
   (setq exec-path (append (split-string-and-unquote path ":") exec-path)))
 
-(when (equal system-type 'darwin)
-  (setq mac-option-modifier 'meta) ;; Bind meta to ALT
-  )
-
 ;; Some term enhancement
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
   (if (memq (process-status proc)
 	    '(signal
-	      exit))
+	      exit
+	      ))
       (let ((buffer (process-buffer proc))) ad-do-it (kill-buffer buffer)) ad-do-it))
 (ad-activate 'term-sentinel)
 
@@ -57,7 +69,8 @@
 ;; Other configs
 (setq make-backup-files nil)
 (setq auto-save-default nil)
-(setq create-lockfiles nil) ;; No lockfiles because the language servers freak out
+ ;; No lockfiles because the language servers freak out
+(setq create-lockfiles nil)
 
 ;; Splash Screen
 (setq inhibit-startup-screen t)
@@ -70,15 +83,16 @@
 ;; Keybinding for term mode
 (add-hook 'term-mode
 	  (lambda ()
-	    (global-set-key (kbd "s-v") 'term-paste)))
+	    (global-set-key (kbd "s-v") 'term-paste)
+	    ))
 
-;; OrgMode Configs
-(setq org-html-validation-link nil)
-(setq org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
-;; (setq org-todo-keyword-faces '(("TODO"    . "blue")
-;; 			       ("WORKING" . "yellow")
-;; 			       ("HOLD"    . "red")
-;; 			       ("DONE"    . "green")))
+;; ;; ;; OrgMode Configs
+;; ;; (setq org-html-validation-link nil)
+;; ;; (setq org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
+;; ;; ;; (setq org-todo-keyword-faces '(("TODO"    . "blue")
+;; ;; ;; 			       ("WORKING" . "yellow")
+;; ;; ;; 			       ("HOLD"    . "red")
+;; ;; ;; 			       ("DONE"    . "green")))
 
 ;; UI configurations
 (scroll-bar-mode -1)
@@ -87,25 +101,24 @@
 (menu-bar-mode   -1)
 (global-linum-mode 1)
 (add-to-list 'default-frame-alist '(font . "Droid Sans Mono for Powerline-11"))
-(add-to-list 'default-frame-alist '(height . 24))
-(add-to-list 'default-frame-alist '(width . 80))
+(add-to-list 'default-frame-alist '(height . 80))
+(add-to-list 'default-frame-alist '(width . 120))
 
 (defalias 'list-buffers 'ibuffer-other-window)
 
-;; Visual line mode with controllable column witdth
+;; Visual line mode with controllable column width
 (use-package
   visual-fill-column
-  :ensure t
   :hook (visual-line-mode . visual-fill-column-mode-hook)
   :config (progn
 	    ;; (add-hook 'visual-fill-column-mode-hook #'visual-line-mode)
-	    (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
+	    (advice-add 'text-scale-adjust
+			:after #'visual-fill-column-adjust)
 	    (setq visual-fill-column-center-text t)))
 
 ;; Anzu for search matching
 (use-package
   anzu
-  :ensure t
   :config (global-anzu-mode 1)
   (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
   (global-set-key [remap query-replace] 'anzu-query-replace))
@@ -113,33 +126,26 @@
 ;; ace-window for window management
 (use-package
   ace-window
-  :ensure t
   :config (progn (global-set-key [remap other-window] 'ace-window)
-	       (custom-set-faces '(aw-leading-char-face ((t
-							  (:inherit ace-jump-face-foreground
-								    :height 3.0)))))))
+		 (custom-set-faces '(aw-leading-char-face ((t
+							    (:inherit ace-jump-face-foreground
+								      :height 3.0
+								      )))))))
 
 ;; move-what-i-mean - jump to beginning of line ignoring indentation
 (use-package
   mwim
-  :ensure t
   :bind (("C-a" . mwim-beginning)
 	 ("C-e" . mwim-end)))
-
-;; try out emacs packages without installing them
-(use-package try
-  :ensure t)
 
 ;; Theme
 (use-package
   doom-themes
-  :ensure t
   :config (load-theme 'doom-opera t))
 
 ;; Helm
 (use-package
   helm
-  :ensure t
   :init (progn
 	  (setq helm-M-x-fuzzy-match t)
 	  (setq helm-mode-fuzzy-match t)
@@ -161,25 +167,21 @@
 	 ("C-x C-f" . helm-find-files)))
 
 (use-package
-  helm-rg
-  :ensure t)
+  helm-rg)
 
 
 (use-package
   helm-swoop
-  :ensure t
   :bind (("M-i" . helm-swoop)
 	 ("M-I" . helm-swoop-back-to-last-point)))
 
 (use-package
   helm-descbinds
-  :ensure t
   :config (helm-descbinds-mode))
 
 ;; Projectile
 (use-package
   projectile
-  :ensure t
   :init (setq projectile-require-project-root nil)
   :bind-keymap ("C-c p" . projectile-command-map)
   :config (progn (projectile-mode 1)
@@ -188,14 +190,12 @@
 ;; Helm Projectile
 (use-package
   helm-projectile
-  :ensure t
   :init (setq helm-projectile-fuzzy-match t)
   :config (helm-projectile-on))
 
 ;; All The Icons
 (use-package
-  all-the-icons
-  :ensure t)
+  all-the-icons)
 
 ;; Fancy titlebar for MacOS
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -203,48 +203,47 @@
 (setq ns-use-proxy-icon  nil)
 (setq frame-title-format nil)
 
-;; Flycheck
+;; flycheck
 (use-package
   flycheck
-  :ensure t
   :config (global-flycheck-mode))
 
 ;; company mode
 (use-package
   company
-  :ensure t
   :init (progn
 	  (setq company-minimum-prefix-length 3)
 	  (setq company-auto-complete nil)
 	  (setq company-idle-delay 0)
 	  (setq company-require-match 'never)
-	  (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
-				    company-preview-frontend company-echo-metadata-frontend))
+	  (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend company-echo-metadata-frontend))
 	  (setq tab-always-indent 'complete)
-	  (defvar completion-at-point-functions-saved nil))
+	  (defvar completion-at-point-functions-saved nil
+	    ))
   :config (progn (global-company-mode 1)
 		 (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
 		 (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
 		 (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
 		 (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
-		 (define-key company-mode-map [remap indent-for-tab-command]
-		   'company-indent-for-tab-command)
+		 (define-key company-mode-map [remap indent-for-tab-command] 'company-indent-for-tab-command)
 		 (defun company-indent-for-tab-command
 		     (&optional
-		      arg)
+		      arg
+		      )
 		   (interactive "P")
 		   (let ((completion-at-point-functions-saved completion-at-point-functions)
 			 (completion-at-point-functions '(company-complete-common-wrapper)))
-		     (indent-for-tab-command arg)))
+		     (indent-for-tab-command arg))
+		   )
 		 (defun company-complete-common-wrapper ()
 		   (let ((completion-at-point-functions completion-at-point-functions-saved))
-		     (company-complete-common)))))
+		     (company-complete-common))
+		   )))
 
 ;; Powerline
 ;; (use-package
 ;;   spaceline
-;;   :ensure t
-;;   :init (setq powerline-default-separator 'slant)
+;;;;   :init (setq powerline-default-separator 'slant)
 ;;   :config (progn(spaceline-emacs-theme)
 ;; 		(spaceline-toggle-minor-modes-off)
 ;; 		(spaceline-toggle-buffer-size-off)
@@ -252,7 +251,6 @@
 
 (use-package
   doom-modeline
-  :ensure t
   :defer t
   :hook (after-init . doom-modeline-init)
   :config (progn
@@ -284,20 +282,16 @@
 	    ;; The interval of checking github.
 	    (setq doom-modeline-github-interval (* 30 60))))
 
-(use-package
-  magit
-  :ensure t
-  :config (setq vc-handled-backends (delq 'Git vc-handled-backends)))
+(use-package magit)
+;;  :config (setq vc-handled-backends (delq 'Git vc-handled-backends)))
 
 ;; Ensure we only remove trailing whitespace
 (use-package
   ws-butler
-  :ensure t
   :init (ws-butler-global-mode))
 
 (use-package
   general
-  :ensure t
   :config (progn (general-define-key "C-+" 'text-scale-increase)
 		 (general-define-key "C--" 'text-scale-decrease)
 		 (general-define-key "M-/" 'hippie-expand)
@@ -306,23 +300,23 @@
 
 (use-package
   crux
-  :ensure t
   :bind (("C-k" . crux-smart-kill-line)
 	 ("C-<backspace>" . crux-kill-line-backwards)))
 
 (use-package
   unfill
-  :ensure t
   :bind ([remap fill-paragraph] . unfill-toggle))
 
 (use-package
   avy
-  :ensure t
   :bind (("C-:" . avy-goto-char)
 	 ("C-'" . avy-goto-char-2)))
 
-;; (use-package mode-icons
-;;   :ensure t)
+(use-package
+  mode-icons)
+
+(use-package
+  visual-regexp)
 
 ;; Other packages and things
 ;; wrap and unwrap lines (fill-paragraph and unfill-paragraph)
@@ -335,7 +329,7 @@
 ;;   helm-dash
 ;;   volatile-highlights?
 ;;   beacon
-;;   visual-regexp
+;;   [Y] visual-regexp
 ;;   visual-regexp-steroids
 ;;   highlight-symbol?
 ;;   [Y] avy?
@@ -352,7 +346,6 @@
 
 (use-package
   treemacs
-  :ensure t
   :defer t
   :init (with-eval-after-load 'winum (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config (progn (treemacs-follow-mode t)
@@ -363,13 +356,13 @@
 	      ("C-x t t"   . treemacs)
 	      ("C-x t B"   . treemacs-bookmark)
 	      ("C-x t C-t" . treemacs-find-file)
-	      ("C-x t M-t" . treemacs-find-tag)))
+	      ("C-x t M-t" . treemacs-find-tag)
+	      ))
 
 (use-package
   treemacs-projectile
   :after treemacs
-  projectile
-  :ensure t)
+  projectile)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -378,23 +371,19 @@
 
 (use-package
   smartparens
-  :ensure t
   :hook (prog-mode . smartparens-mode))
 
 (use-package
   rainbow-delimiters
-  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Language servers
 (use-package
   lsp-mode
-  :ensure t
   :init (add-hook 'programming-mode-hook 'lsp))
 
 (use-package
   lsp-ui
-  :ensure t
   :after lsp-mode
   :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
@@ -402,40 +391,31 @@
 ;; Rust
 (use-package
   rust-mode
-  :ensure t
   :init (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
 
-(use-package
-  lsp-rust
-  :ensure t
-  :after lsp-mode
-  rust-mode
-  :init (add-hook 'rust-mode-hook #'lsp-rust-enable))
+;; (use-package
+;;   lsp-rust
+;;   :after rust-mode
+;;   :init (add-hook 'rust-mode-hook #'lsp-rust-enable))
 
 ;; Go
 (use-package
   go-mode
-  :ensure t
   :init (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
 
-(use-package
-  lsp-go
-  :ensure t
-  :after lsp-mode
-  go-mode
-  :init (add-hook 'go-mode-hook #'lsp-go-enable))
+;; (use-package
+;;   lsp-go
+;;   :after lsp-mode
+;;   go-mode
+;;   :init (add-hook 'go-mode-hook #'lsp-go-enable))
 
-(use-package
-  kotlin-mode
-  :ensure t)
+(use-package kotlin-mode)
 
 ;; (use-package
-;;   flycheck-kotlin
-;;   :ensure t)
+;;   flycheck-kotlin)
 
 (use-package
   lsp-java
-  :ensure t
   :after lsp-mode
   :init (add-hook 'java-mode-hook #'lsp-java-enable))
 
@@ -443,13 +423,11 @@
 ;; elisp
 (use-package
   elisp-format
-  :ensure t
   :defer t)
 
 ;; YAML
 (use-package
   yaml-mode
-  :ensure t
   :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -457,17 +435,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Show a dashboard at startup
-(use-package dashboard
-  :ensure t
+(use-package
+  dashboard
   :init (progn
 	  (setq dashboard-startup-banner nil)
 	  (setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5))))
-  :config
-  (dashboard-setup-startup-hook))
+				  (bookmarks . 5)
+				  (projects . 5)
+				  (agenda . 5)
+				  (registers . 5))))
+  :config (dashboard-setup-startup-hook))
 
 ;; Pretty symbols for lambda etc
 (global-prettify-symbols-mode +1)
@@ -479,12 +456,8 @@
 ;; Use a hook so the message doesn't get clobbered by other messages.
 (add-hook 'emacs-startup-hook
 	  (lambda ()
-	    (message "Emacs ready in %s with %d garbage collections." (format "%.2f seconds"
-									      (float-time
-									       (time-subtract
-										after-init-time
-										before-init-time)))
-		     gcs-done)))
+	    (message "Emacs ready in %s with %d garbage collections." (format "%.2f seconds" (float-time (time-subtract after-init-time before-init-time))) gcs-done)
+	    ))
 
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
