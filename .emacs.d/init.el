@@ -324,8 +324,8 @@
 ;; (use-package mode-icons
 ;;   :ensure t)
 
-;; TODO: Other packages and things
-;; [Y] wrap and unwrap lines (fill-paragraph and unfill-paragraph)
+;; Other packages and things
+;; wrap and unwrap lines (fill-paragraph and unfill-paragraph)
 ;; packages:
 ;;   hi-lock
 ;;   [N] ace-jump-mode
@@ -443,6 +443,12 @@
 ;; elisp
 (use-package
   elisp-format
+  :ensure t
+  :defer t)
+
+;; YAML
+(use-package
+  yaml-mode
   :ensure t
   :defer t)
 
