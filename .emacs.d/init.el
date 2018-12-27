@@ -452,6 +452,9 @@
 ;; Enable the server by default
 (server-start)
 
+;; Follow symlinks for source-controlled files by default
+(setq vc-follow-symlinks t)
+
 ;; Profile app startup
 ;; Use a hook so the message doesn't get clobbered by other messages.
 (add-hook 'emacs-startup-hook
