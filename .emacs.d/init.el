@@ -86,14 +86,6 @@
 	    (global-set-key (kbd "s-v") 'term-paste)
 	    ))
 
-;; ;; ;; OrgMode Configs
-;; ;; (setq org-html-validation-link nil)
-;; ;; (setq org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
-;; ;; ;; (setq org-todo-keyword-faces '(("TODO"    . "blue")
-;; ;; ;; 			       ("WORKING" . "yellow")
-;; ;; ;; 			       ("HOLD"    . "red")
-;; ;; ;; 			       ("DONE"    . "green")))
-
 ;; UI configurations
 (scroll-bar-mode -1)
 (tool-bar-mode   -1)
@@ -105,6 +97,14 @@
 (add-to-list 'default-frame-alist '(width . 120))
 
 (defalias 'list-buffers 'ibuffer-other-window)
+
+;;;;;;;;;;;;;;
+;; org-mode ;;
+;;;;;;;;;;;;;;
+(load (expand-file-name "straight-org-hacks.el" user-emacs-directory))
+(setq org-html-validation-link nil)
+(setq org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
+(setq org-agenda-files '("~/Documents/org"))
 
 ;; Visual line mode with controllable column width
 (use-package
@@ -455,12 +455,19 @@
 ;; Follow symlinks for source-controlled files by default
 (setq vc-follow-symlinks t)
 
-;; Profile app startup
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Profile app startup ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; Use a hook so the message doesn't get clobbered by other messages.
 (add-hook 'emacs-startup-hook
 	  (lambda ()
 	    (message "Emacs ready in %s with %d garbage collections." (format "%.2f seconds" (float-time (time-subtract after-init-time before-init-time))) gcs-done)
 	    ))
 
+
+;;;;;;;;;;;;;;;;;;;;
+;; Customizations ;;
+;;;;;;;;;;;;;;;;;;;;
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
