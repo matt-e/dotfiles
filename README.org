@@ -1,0 +1,21 @@
+* dotfiles
+
+This is design to be a set of shared/public dotfiles. It lives as a submodule within a repo usually hosted within my current employer's VCS. This allows me to have a usually-shared set of default configurations, without leaking the details of my employer's environment. I don't keep secrets in my dotfiles or anything like that, but it's nice to keep a rigid separation between personal and professional environments.
+
+** Setting up the super-environment
+
+Add this repo as a submodule of the main dotfile repo, named 'public'. In the root of the main repo add an 'install.sh' script that has the following contents:
+
+#+BEGIN_SRC sh
+  #!/bin/bash
+
+  # Add these directories because we don't want stow to manage the
+  # entire ~/.emacs or ~/local paths
+  mkdir -p ${HOME}/local/bin
+  mkdir -p ${HOME}/.emacs.d
+
+  stow -Rv -t $HOME public
+  # Add additional lines for all other proprietary environments:
+  # stow -Rv -t $HOME <employer>
+
+#+END_SRC
