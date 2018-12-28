@@ -1,3 +1,5 @@
+
+
 ;; Startup optimization - set GC threshold high
 (setq gc-cons-threshold-original gc-cons-threshold)
 (setq gc-cons-threshold (* 1024 1024 100))
@@ -20,6 +22,17 @@
 (when (equal system-type 'darwin)
   (setq mac-option-modifier 'meta))
 
+;; prefer utf8 encoding
+(prefer-coding-system 'utf-8)
+
+;;; store all backup and autosave files in the tmp dir
+;;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
+(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Use straight.el to manage packages ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar bootstrap-version)
 (let ((bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el"
 					user-emacs-directory))
@@ -34,25 +47,21 @@
 (setq straight-use-package-by-default t)
 (straight-use-package 'use-package)
 
-;; prefer utf8 encoding
-(prefer-coding-system 'utf-8)
-
-;;; store all backup and autosave files in the tmp dir
-;;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
-(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-
 ;; enable async compilation for use-package
 (use-package
   async
   :config (async-bytecomp-package-mode 1))
 
 ;; PATH
-(let ((path (shell-command-to-string ". ~/.profile; echo -n $PATH")))
-  (setenv "PATH" path)
-  (setq exec-path (append (split-string-and-unquote path ":") exec-path)))
+;; (let ((path (shell-command-to-string ". ~/.profile; echo -n $PATH")))
+;;   (setenv "PATH" path)
+;;   (setq exec-path (append (split-string-and-unquote path ":") exec-path)))
+(use-package
+  exec-path-from-shell
+  :config (when (memq window-system '(mac ns x))
+	    (exec-path-from-shell-initialize)))
 
-;; Some term enhancement
+;; some term enhancement
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
   (if (memq (process-status proc)
 	    '(signal
@@ -283,7 +292,6 @@
 	    (setq doom-modeline-github-interval (* 30 60))))
 
 (use-package magit)
-;;  :config (setq vc-handled-backends (delq 'Git vc-handled-backends)))
 
 ;; Ensure we only remove trailing whitespace
 (use-package
@@ -295,8 +303,8 @@
   :config (progn (general-define-key "C-+" 'text-scale-increase)
 		 (general-define-key "C--" 'text-scale-decrease)
 		 (general-define-key "M-/" 'hippie-expand)
-		 (general-define-key "M-f" 'forward-to-word))) ;; Replace forward-word with forward-to-work -- skips
-;; whitespace at the beginning of the line
+		 ;; Replace forward-word with forward-to-work -- skips whitespace at the beginning of the line
+		 (general-define-key "M-f" 'forward-to-word)))
 
 (use-package
   crux
@@ -318,38 +326,58 @@
 (use-package
   visual-regexp)
 
-;; Other packages and things
-;; wrap and unwrap lines (fill-paragraph and unfill-paragraph)
-;; packages:
-;;   hi-lock
+;; Highlight yank/kill/etc
+(use-package
+  volatile-highlights
+  :config (volatile-highlights-mode))
+
+;; Show cursor when the window scrolls
+(use-package
+  beacon
+  :init (progn (setq beacon-size 20))
+  :config (beacon-mode 1))
+
+;; Other packages and things:
 ;;   [N] ace-jump-mode
-;;   hydra?
-;;   eyebrowse
 ;;   [Y] avy/helm-swoop/?
-;;   helm-dash
-;;   volatile-highlights?
-;;   beacon
-;;   [Y] visual-regexp
-;;   visual-regexp-steroids
-;;   highlight-symbol?
 ;;   [Y] avy?
-;;   origami/hideshow/vimish-fold?
-;;   python, ruby, java, javascript, typescript,
-;;   groovy, kotlin, markdown, ansible, docker, terraform, kubernetes
+;;   [Y] beacon
+;;   [Y] visual-regexp
+;;   [Y] volatile-highlights?
+;;   [Y] wrap and unwrap lines (fill-paragraph and unfill-paragraph)
+;;   ansible
+;;   color-rg
+;;   [Y] docker
+;;   eyebrowse
+;;   git-gutter
+;;   git-messenger
+;;   git-undo?
+;;   groovy
+;;   helm-dash
 ;;   helm-make
-;; git-gutter
-;; git-messenger
-;; git-undo?
-;; color-rg
-;; magithub
+;;   hi-lock
+;;   highlight-symbol?
+;;   hydra?
+;;   java
+;;   javascript
+;;   kotlin
+;;   kubernetes
+;;   magithub
+;;   markdown
+;;   origami/hideshow/vimish-fold?
+;;   python
+;;   ruby
+;;   terraform
+;;   typescript,
+;;   visual-regexp-steroids
 ;;
 
 (use-package
   treemacs
   :defer t
   :init (with-eval-after-load 'winum (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config (progn (treemacs-follow-mode t)
-		 (add-hook 'programming-mode-hook 'treemacs-tag-follow-mode))
+  :hook (prog-mopde . treemacs-tag-follow-mode)
+  :config (treemacs-follow-mode t)
   :bind (:map global-map
 	      ("M-0"       . treemacs-select-window)
 	      ("C-x t 1"   . treemacs-delete-other-windows)
@@ -377,18 +405,17 @@
   rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; Language servers
+;; ------ Language servers
 (use-package
   lsp-mode
-  :init (add-hook 'programming-mode-hook 'lsp))
+  :hook (prog-mode . lsp))
 
 (use-package
   lsp-ui
   :after lsp-mode
-  :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  :hook (lsp-mode . lsp-ui-mode))
 
-
-;; Rust
+;; ------ Rust
 (use-package
   rust-mode
   :init (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
@@ -398,41 +425,82 @@
 ;;   :after rust-mode
 ;;   :init (add-hook 'rust-mode-hook #'lsp-rust-enable))
 
-;; Go
+;; ------ Go
 (use-package
   go-mode
-  :init (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+  :config (progn
+	    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+	    (when (memq window-system '(mac ns x))
+	      (dolist (var '("GOPATH" "GO15VENDOREXPERIMENT"))
+		(unless (getenv var)
+		  (exec-path-from-shell-copy-env var))))))
 
-;; (use-package
-;;   lsp-go
-;;   :after lsp-mode
-;;   go-mode
-;;   :init (add-hook 'go-mode-hook #'lsp-go-enable))
+(use-package
+  lsp-go
+  :hook (go-mode . lsp))
 
+(use-package
+  flycheck-gometalinter
+  :init (progn
+	  (setq flycheck-gometalinter-vendor t)
+	  (setq flycheck-disabled-checkers '(go-gofmt
+					     go-golint
+					     go-vet
+					     go-build
+					     go-test
+					     go-errcheck)))
+  :config (progn (flycheck-gometalinter-setup)))
+
+(use-package ggtags)
+(use-package helm-gtags)
+(use-package
+  go-eldoc
+  :hook (go-mode . go-eldoc-setup))
+(use-package go-guru)
+
+;; ------ Kotlin
 (use-package kotlin-mode)
 
 ;; (use-package
 ;;   flycheck-kotlin)
 
+;; ------ Java
 (use-package
   lsp-java
   :after lsp-mode
   :init (add-hook 'java-mode-hook #'lsp-java-enable))
 
-
-;; elisp
+;; ------ elisp
 (use-package
   elisp-format
   :defer t)
 
-;; YAML
+;; ------ YAML
 (use-package
   yaml-mode
   :defer t)
 
+;; ------ Docker
+(use-package
+  dockerfile-mode
+  :config (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+(use-package
+  docker)
+
+;; ------ Kubernetes
+;; (use-package
+;;   kubernetes
+;;   :commands (kubernetes-overview))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other misc things ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Highlight indentation
+(use-package
+  highlight-indentation
+  :config (progn (add-hook 'yaml-mode-hook 'highlight-indentation-current-column-mode)))
 
 ;; Show a dashboard at startup
 (use-package
