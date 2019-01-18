@@ -58,8 +58,8 @@
 ;;   (setq exec-path (append (split-string-and-unquote path ":") exec-path)))
 (use-package
   exec-path-from-shell
-  :config (when (memq window-system '(mac ns x))
-	    (exec-path-from-shell-initialize)))
+  :if (memq window-system '(mac ns x))
+  :config (exec-path-from-shell-initialize))
 
 ;; some term enhancement
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
@@ -105,7 +105,7 @@
 (add-to-list 'default-frame-alist '(height . 80))
 (add-to-list 'default-frame-alist '(width . 120))
 
-(defalias 'list-buffers 'ibuffer-other-window)
+;; (defalias 'list-buffers 'ibuffer-other-window)
 
 ;;;;;;;;;;;;;;
 ;; org-mode ;;
@@ -113,7 +113,15 @@
 (load (expand-file-name "straight-org-hacks.el" user-emacs-directory))
 (setq org-html-validation-link nil)
 (setq org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
-(setq org-agenda-files '("~/Documents/org"))
+(setq org-directory (expand-file-name "~/Sync/org/"))
+(setq org-agenda-files '(org-agenda))
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+
+(setq org-reverse-note-order t)
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "unfiled.org" "Unfiled Tasks")
+         "* TODO %?\n" :prepend t :kill-buffer t)))
 
 ;; Visual line mode with controllable column width
 (use-package
@@ -173,7 +181,8 @@
   :config (helm-mode 1)
   :bind (("M-x" . helm-M-x)
 	 ("C-x r b" . helm-filtered-bookmarks)
-	 ("C-x C-f" . helm-find-files)))
+	 ("C-x C-f" . helm-find-files)
+	 ("C-x b" . helm-mini)))
 
 (use-package
   helm-rg)
@@ -304,7 +313,10 @@
 		 (general-define-key "C--" 'text-scale-decrease)
 		 (general-define-key "M-/" 'hippie-expand)
 		 ;; Replace forward-word with forward-to-work -- skips whitespace at the beginning of the line
-		 (general-define-key "M-f" 'forward-to-word)))
+		 (general-define-key "M-f" 'forward-to-word)
+		 (general-define-key "C-c a" 'org-agenda)
+		 (general-define-key "C-c t" 'org-capture)
+		 ))
 
 (use-package
   crux
@@ -418,16 +430,17 @@
 ;; ------ Rust
 (use-package
   rust-mode
-  :init (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
+  :config (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
 
 ;; (use-package
 ;;   lsp-rust
-;;   :after rust-mode
-;;   :init (add-hook 'rust-mode-hook #'lsp-rust-enable))
+;;   :init (progn (setq lsp-rust-rls-command '("rustup" "run" "stable" "rls")))
+;;   :config (add-hook 'rust-mode-hook #'lsp-rust-enable))
 
 ;; ------ Go
 (use-package
   go-mode
+  :hook (go-mode . (lambda () (add-hook 'before-save-hook 'gofmt-before-save)))
   :config (progn
 	    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 	    (when (memq window-system '(mac ns x))
@@ -493,6 +506,16 @@
 ;;   kubernetes
 ;;   :commands (kubernetes-overview))
 
+;; ------ Systemd
+(use-package
+  systemd)
+
+;; ------ Bazel
+(use-package
+  bazel-mode
+  ;; Format on save
+  :hook (bazel-mode . (lambda () (add-hook 'before-save-hook #'bazel-format nil t))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other misc things ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -522,6 +545,12 @@
 
 ;; Follow symlinks for source-controlled files by default
 (setq vc-follow-symlinks t)
+
+;; persist state
+(use-package psession
+  :config (progn
+		(psession-mode 1)
+		(psession-autosave-mode 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Profile app startup ;;
