@@ -111,17 +111,11 @@
 ;; org-mode ;;
 ;;;;;;;;;;;;;;
 (load (expand-file-name "straight-org-hacks.el" user-emacs-directory))
-(setq org-html-validation-link nil)
-(setq org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
 (setq org-directory (expand-file-name "~/Sync/org/"))
-(setq org-agenda-files '(org-agenda))
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 
-(setq org-reverse-note-order t)
 
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "unfiled.org" "Unfiled Tasks")
-         "* TODO %?\n" :prepend t :kill-buffer t)))
+
 
 ;; Visual line mode with controllable column width
 (use-package
