@@ -506,6 +506,10 @@
   ;; Format on save
   :hook (bazel-mode . (lambda () (add-hook 'before-save-hook #'bazel-format nil t))))
 
+;; ------ Terraform
+(use-package
+  terraform-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other misc things ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
