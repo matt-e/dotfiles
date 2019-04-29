@@ -1,5 +1,3 @@
-
-
 ;; Startup optimization - set GC threshold high
 (setq gc-cons-threshold-original gc-cons-threshold)
 (setq gc-cons-threshold (* 1024 1024 100))
@@ -113,8 +111,6 @@
 (load (expand-file-name "straight-org-hacks.el" user-emacs-directory))
 (setq org-directory (expand-file-name "~/Sync/org/"))
 (setq org-default-notes-file (concat org-directory "/notes.org"))
-
-
 
 
 ;; Visual line mode with controllable column width
@@ -286,7 +282,7 @@
 	    (setq doom-modeline-persp-name t)
 
 	    ;; Whether display `lsp' state or not. Non-nil to display in mode-line.
-	    (setq doom-modeline-lsp t)
+	    ; (setq doom-modeline-lsp t)
 
 	    ;; Whether display github notifications or not.
 	    (setq doom-modeline-github t)
@@ -382,7 +378,7 @@
   treemacs
   :defer t
   :init (with-eval-after-load 'winum (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :hook (prog-mopde . treemacs-tag-follow-mode)
+  :hook (prog-mode . treemacs-tag-follow-mode)
   :config (treemacs-follow-mode t)
   :bind (:map global-map
 	      ("M-0"       . treemacs-select-window)
@@ -412,14 +408,14 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; ------ Language servers
-(use-package
-  lsp-mode
-  :hook (prog-mode . lsp))
+;; (use-package
+;;   lsp-mode
+;;   :hook (prog-mode . lsp))
 
-(use-package
-  lsp-ui
-  :after lsp-mode
-  :hook (lsp-mode . lsp-ui-mode))
+;; (use-package
+;;   lsp-ui
+;;   :after lsp-mode
+;;   :hook (lsp-mode . lsp-ui-mode))
 
 ;; ------ Rust
 (use-package
@@ -434,17 +430,17 @@
 ;; ------ Go
 (use-package
   go-mode
-  :hook (go-mode . (lambda () (add-hook 'before-save-hook 'gofmt-before-save)))
   :config (progn
+	    (add-hook 'go-mode-hook #'(lambda () (add-hook 'before-save-hook 'gofmt-before-save)))
 	    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 	    (when (memq window-system '(mac ns x))
 	      (dolist (var '("GOPATH" "GO15VENDOREXPERIMENT"))
 		(unless (getenv var)
 		  (exec-path-from-shell-copy-env var))))))
 
-(use-package
-  lsp-go
-  :hook (go-mode . lsp))
+;; (use-package
+;;   lsp-go
+;;   :hook (go-mode . lsp))
 
 (use-package
   flycheck-gometalinter
@@ -460,10 +456,10 @@
 
 (use-package ggtags)
 (use-package helm-gtags)
-(use-package
-  go-eldoc
-  :hook (go-mode . go-eldoc-setup))
-(use-package go-guru)
+;; (use-package
+;;   go-eldoc
+;;   :hook (go-mode . go-eldoc-setup))
+;; (use-package go-guru)
 
 ;; ------ Kotlin
 (use-package kotlin-mode)
@@ -472,10 +468,10 @@
 ;;   flycheck-kotlin)
 
 ;; ------ Java
-(use-package
-  lsp-java
-  :after lsp-mode
-  :init (add-hook 'java-mode-hook #'lsp-java-enable))
+;; (use-package
+;;   lsp-java
+;;   :after lsp-mode
+;;   :init (add-hook 'java-mode-hook #'lsp-java-enable))
 
 ;; ------ elisp
 (use-package
