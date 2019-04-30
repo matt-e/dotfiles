@@ -282,7 +282,7 @@
 	    (setq doom-modeline-persp-name t)
 
 	    ;; Whether display `lsp' state or not. Non-nil to display in mode-line.
-	    ; (setq doom-modeline-lsp t)
+	    (setq doom-modeline-lsp t)
 
 	    ;; Whether display github notifications or not.
 	    (setq doom-modeline-github t)
@@ -378,7 +378,7 @@
   treemacs
   :defer t
   :init (with-eval-after-load 'winum (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :hook (prog-mode . treemacs-tag-follow-mode)
+  ;; :hook (prog-mode . treemacs-tag-follow-mode)
   :config (treemacs-follow-mode t)
   :bind (:map global-map
 	      ("M-0"       . treemacs-select-window)
@@ -407,15 +407,6 @@
   rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; ------ Language servers
-;; (use-package
-;;   lsp-mode
-;;   :hook (prog-mode . lsp))
-
-;; (use-package
-;;   lsp-ui
-;;   :after lsp-mode
-;;   :hook (lsp-mode . lsp-ui-mode))
 
 ;; ------ Rust
 (use-package
@@ -438,10 +429,6 @@
 		(unless (getenv var)
 		  (exec-path-from-shell-copy-env var))))))
 
-;; (use-package
-;;   lsp-go
-;;   :hook (go-mode . lsp))
-
 (use-package
   flycheck-gometalinter
   :init (progn
@@ -456,6 +443,7 @@
 
 (use-package ggtags)
 (use-package helm-gtags)
+(use-package company-go)
 ;; (use-package
 ;;   go-eldoc
 ;;   :hook (go-mode . go-eldoc-setup))
@@ -510,6 +498,17 @@
 (use-package
   terraform-mode)
 
+
+;; ------ Language servers
+(use-package
+  lsp-mode
+  :hook (go-mode . #'lsp))
+
+(use-package
+  lsp-ui
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other misc things ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -541,10 +540,10 @@
 (setq vc-follow-symlinks t)
 
 ;; persist state
-(use-package psession
-  :config (progn
-		(psession-mode 1)
-		(psession-autosave-mode 1)))
+;; (use-package psession
+;;   :config (progn
+;; 		(psession-mode 1)
+;; 		(psession-autosave-mode 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Profile app startup ;;
