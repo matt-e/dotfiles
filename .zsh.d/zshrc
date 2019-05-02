@@ -1,6 +1,6 @@
 # -*- sh -*-
 
-for i in $HOME/zsh.d/S*
+for i in $HOME/.zsh.d/S*
 do
   source $i
 done
