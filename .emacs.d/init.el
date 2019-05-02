@@ -101,7 +101,7 @@
 (tooltip-mode    -1)
 (menu-bar-mode   -1)
 (global-linum-mode 1)
-(add-to-list 'default-frame-alist '(font . "Droid Sans Mono for Powerline-11"))
+(add-to-list 'default-frame-alist '(font . "Roboto Mono for Powerline-10"))
 (add-to-list 'default-frame-alist '(height . 80))
 (add-to-list 'default-frame-alist '(width . 120))
 
