@@ -1,10 +1,13 @@
 #! /bin/sh
 
-
+killall sxhkd 2> /dev/null
 sxhkd &
 
-bspc monitor HDMI2 -d 1 2 3 4 5
-bspc monitor VGA1 -d 6 7 8 9 0
+killall compton 2> /dev/null
+compton --config ~/.config/compton/compton.conf &
+
+bspc monitor DVI-I-0 -d 1 2 3 4 5
+bspc monitor DVI-D-1 -d 6 7 8 9 0
 
 bspc config border_width         2
 bspc config window_gap          6

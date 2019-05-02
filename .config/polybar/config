@@ -17,18 +17,18 @@
 ;==========================================================
 
 [colors]
-;background = ${xrdb:color0:#222}
-background = #222
+background = ${xrdb:color0:#222}
+;background = #222
 background-alt = #444
-;foreground = ${xrdb:color7:#222}
-foreground = #dfdfdf
+foreground = ${xrdb:color7:#dfdfdf}
+; foreground = #dfdfdf
 foreground-alt = #555
 primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
 
 [bar/main]
-monitor = ${env:MONITOR:HDMI2}
+monitor = ${env:MONITOR:DVI-I-0}
 width = 100%
 height = 27
 ;offset-x = 1%
@@ -57,6 +57,15 @@ font-0 = siji:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = wuncon siji:pixelsize=10;1
 
+; font-0 = FuraCode Nerd Font Mono:style=medium:size=15;3
+; ;font-1 = Fantasque Sans Mono Nerd Font:size=16;4
+; font-1 = FuraCode Nerd Font Mono:style=medium:size=15;3
+; font-2 = Font Awesome 5 Brands:size=15;2
+; font-3 = Font Awesome 5 Free:style=Regular:size=15;2
+; font-4 = Font Awesome 5 Free:style=Solid:size=15;2
+; font-5 = Font Awesome 5:size=15;3
+; font-6 = Droid Sans Mono Nerd Fontsize=15;3
+
 modules-left = bspwm
 modules-center =
 modules-right = filesystem xkeyboard memory cpu eth temperature date powermenu
@@ -79,8 +88,72 @@ scroll-down = bspwm-deskprev
 cursor-click = pointer
 cursor-scroll = ns-resize
 
+[module/right1]
+type = custom/text
+content = ""
+content-foreground = #CF004B
+content-background = #2D3341
+label-font = 1
+
+[module/left1]
+type = custom/text
+content = ""
+content-foreground = #CF004B
+content-background = #2D3341
+
+[module/right2]
+type = custom/text
+content = ""
+content-foreground = #CF004B
+content-background = #2D3341
+
+[module/left2]
+type = custom/text
+content = ""
+content-foreground = #CF004B
+content-background = #2D3341
+
+[module/m1]
+type = custom/text
+content = "  "
+content-foreground = #2D3341
+content-background = #FAAD45
+content-font =
+
+[module/m2]
+type = custom/text
+content = ""
+content-foreground = #18859C
+content-background = #FAAD45
+
+
+[module/c1]
+type = custom/text
+content = "  "
+content-foreground = #2D3341
+content-background = #FAAD45
+
+[module/c2]
+type = custom/text
+content = ""
+content-foreground = #18859C
+content-background = #FAAD45
+
+
+[module/b1]
+type = custom/text
+content = "  "
+content-foreground = #2D3341
+content-background = #FAAD45
+
+[module/t1]
+type = custom/text
+content = "  "
+content-foreground = #2D3341
+content-background = #FAAD45
+
 [bar/secondary]
-monitor = ${env:MONITOR:VGA1}
+monitor = ${env:MONITOR:DVI-D-1}
 width = 100%
 height = 27
 ;offset-x = 1%
@@ -165,19 +238,19 @@ label-unmounted-foreground = ${colors.foreground-alt}
 type = internal/bspwm
 pin-workspaces = true
 
-label-focused = %index%
+label-focused = %name%
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 2
 
-label-occupied = %index%
+label-occupied = %name%
 label-occupied-padding = 2
 
-label-urgent = %index%!
+label-urgent = %name%!
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
 
-label-empty = %index%
+label-empty = %name%
 label-empty-foreground = ${colors.foreground-alt}
 label-empty-padding = 2
 

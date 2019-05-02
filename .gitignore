@@ -14,3 +14,4 @@ home/.emacs.d/auto-save-list
 /home/.emacs.d/ido.last
 /home/.emacs.d/recentf
 *.el~
+.config/systemd/user/default.target.wants
