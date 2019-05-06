@@ -108,3 +108,5 @@ if (( ${+ZSH_KUBECTL_PROMPT} )); then
 fi
 
 . ${HOME}/.zsh.d/zshrc
+
+bindkey -e
