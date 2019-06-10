@@ -94,7 +94,10 @@ zplug "supercrabtree/k"
 zplug "plugins/gradle", from:oh-my-zsh
 zplug "zuxfoucault/colored-man-pages_mod"
 zplug "littleq0903/gcloud-zsh-completion", use:src
-[[ -d ${HOME}/.kube ]] && zplug "superbrothers/zsh-kubectl-prompt"
+if [[ -d ${HOME}/.kube ]]; then
+    zplug "superbrothers/zsh-kubectl-prompt"
+    RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
+fi
 
 # Theme
 zplug "retroalgic/aplos", as:theme
@@ -102,10 +105,6 @@ zplug "retroalgic/aplos", as:theme
 # Start zplug
 zplug check || zplug install
 zplug load # --verbose
-
-if (( ${+ZSH_KUBECTL_PROMPT} )); then
-  RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
-fi
 
 . ${HOME}/.zsh.d/zshrc
 
