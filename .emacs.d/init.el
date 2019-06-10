@@ -545,6 +545,17 @@
 ;; 		(psession-mode 1)
 ;; 		(psession-autosave-mode 1)))
 
+
+;; Track command usage
+(use-package
+    keyfreq
+  :config (progn
+	    (keyfreq-mode 1)
+	    (keyfreq-autosave-mode 1)))
+
+;; Don't open ediff control-panel in a new frame
+(advice-add 'ediff-window-display-p :override #'ignore)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Profile app startup ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
