@@ -530,6 +530,10 @@
 				  (registers . 5))))
   :config (dashboard-setup-startup-hook))
 
+;; Switch between camel-case & friends
+(use-package
+  string-inflection)
+
 ;; Pretty symbols for lambda etc
 (global-prettify-symbols-mode +1)
 
