@@ -14,6 +14,7 @@
  '(gofmt-command "goimports")
  '(helm-adaptive-mode t nil (helm-adaptive))
  '(org-agenda-files '("~/Sync/org"))
+ '(next-line-add-newlines nil)
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
@@ -28,4 +29,4 @@
  '(org-fast-tag-selection-single-key 'expert)
  '(org-html-validation-link nil)
  '(org-reverse-note-order t)
- '(org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE")))
+ '(org-todo-keywords '((sequence "TODO" "WORKING" "HOLD" "|" "DONE"))))

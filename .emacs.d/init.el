@@ -407,8 +407,17 @@
   rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+;; ------ Language servers
+;; (use-package
+;;   lsp-mode
+;;   :hook (prog-mode . lsp))
 
 ;; ------ Rust
+;; (use-package
+;;   lsp-ui
+;;   :after lsp-mode
+;;   :hook (lsp-mode . lsp-ui-mode))
+
 (use-package
   rust-mode
   :config (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
@@ -428,6 +437,10 @@
 	      (dolist (var '("GOPATH" "GO15VENDOREXPERIMENT"))
 		(unless (getenv var)
 		  (exec-path-from-shell-copy-env var))))))
+
+;; (use-package
+;;   lsp-go
+;;   :hook (go-mode . lsp))
 
 (use-package
   flycheck-gometalinter
