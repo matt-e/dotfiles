@@ -100,7 +100,7 @@ if [[ -d ${HOME}/.kube ]]; then
 fi
 
 # Theme
-zplug "retroalgic/aplos", as:theme
+zplug romkatv/powerlevel10k, use:powerlevel10k.zsh-theme
 
 # Start zplug
 zplug check || zplug install
@@ -109,3 +109,6 @@ zplug load # --verbose
 . ${HOME}/.zsh.d/zshrc
 
 bindkey -e
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
