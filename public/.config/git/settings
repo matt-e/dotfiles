@@ -1,9 +1,16 @@
-[pull]
-	rebase = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 [fetch]
 	prune = true
+[core]
+	editor = emacsclient
+[credential]
+	helper = cache
+[diff]
+	algorithm = histogram
+[pull]
+	rebase = true
 [alias]
-
 	d = diff
 	ds = diff --stat
 	dc = diff --cached
