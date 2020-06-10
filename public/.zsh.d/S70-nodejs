@@ -1,0 +1,2 @@
+path_prepend "$HOME/.yarn/bin"
+path_prepend "$HOME/.config/yarn/global/node_modules/.bin"
