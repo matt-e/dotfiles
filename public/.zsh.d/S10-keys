@@ -1,0 +1,4 @@
+# -*- sh-mode -*-
+
+# export GPG_TTY=$(tty)
+eval `keychain --lockwait 86400 --agents gpg,ssh --eval id_ecdsa`
