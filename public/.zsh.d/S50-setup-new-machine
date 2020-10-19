@@ -1,27 +1,115 @@
 # -*- sh -*-
 
-function setup_new_machine {
-    set -x
+function brew_cask {
+    local package=$1
+    shift 1
+    if brew cask ls --versions $package > /dev/null; then
+      echo "$package already installed"
+    else 
+      echo "Installing $package"
+      brew cask install $package "$@"
+    fi
+}
 
+function brew_pkg {
+    local package=$1
+    shift 1
+    if brew ls --versions $package > /dev/null; then
+      echo "$package already installed"
+    else 
+      echo "Installing $package"
+      brew install $package "$@"
+    fi
+}
+
+function setup_new_machine {
     local working=$HOME/tmp/setup
     mkdir -p $working
     pushd $working
 
-    echo "Installing Homebrew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-    echo "Installing emacs"
-    brew install emacs-mac --with-modules --with-spacemacs-icon --with-xml2
+    if [ -z $DEVROOT ]; then
+      echo 'Please ensure that $DEVROOT is set'
+      return 1
+    fi
 
-    echo "Installing iterm2"
-    brew cask install iterm2
+    if [ -z $GOPATH ]; then      
+      echo 'Please ensure that $GOPATH is set'
+      return 1
+    fi
 
-    echo "Installing powerline fonts"
-    git clone https://github.com/powerline/fonts
-    pushd fonts
-    ./install.sh
-    popd
+    if which brew > /dev/null; then
+      echo "Homebrew already installed"
+    else
+      echo "Installing Homebrew"
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
 
+    echo "setting up brew taps"
+    brew tap d12frosted/emacs-plus
+    brew tap AdoptOpenJDK/openjdk
+    brew tap homebrew/cask-fonts
+
+    brew_pkg git 
+    brew_pkg ripgrep 
+    brew_pkg coreutils 
+    brew_pkg gpg 
+    brew_pkg fd
+    brew_pkg datamash
+    brew_pkg emacs-plus@28 --with-modern-icon-cg433n --with-jansson
+    brew_cask adoptopenjdk8
+    brew_cask iterm2
+    brew_cask font-hack-nerd-font
+    brew_cask intellij-idea
+    brew_cask android-studio
+    brew_cask visual-studio-code
+    brew_cask alfred
+    brew_cask google-cloud-sdk
+    echo "Don't forget to run "
+    echo "  gcloud init"
+    echo "  gcloud components update"
+    echo '  gcloud auth application-default login --scopes="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform"'
+    brew_cask spotify
+    brew_pkg aws-cli
+    brew_pkg kubectl
+    brew_pkg aws-iam-authenticator
+    brew_pkg fzf
+    brew_pkg exa
+    brew_pkg keychain
+    brew_pkg tree
+    brew_pkg protoc
+    brew_pkg protoc-gen-go
+
+    if [ -f ~/.emacs.d/bin/doom ]; then
+      echo "Doom emacs already installed"
+    else 
+      git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+      echo "run ~/.emacs.d/bin/doom install to configure doom emacs"
+    fi
+
+    if [ -d $DEVROOT/.asdf ]; then
+      echo "asdf-vm already installed"      
+    else
+      git clone https://github.com/asdf-vm/asdf.git $DEVROOT/.asdf
+      pushd $DEVROOT/.asdf
+      git checkout "$(git describe --abbrev=0 --tags)"
+      popd
+
+      echo "installing asdf plugins"
+      export ASDF_DATA_DIR=$DEVROOT/.asdf
+      . $DEVROOT/.asdf/asdf.sh
+      asdf plugin-add ruby
+      asdf plugin-add golang
+      asdf plugin-add rust
+      asdf plugin-add nodejs
+      bash -c "$DEVROOT/.asdf/plugins/nodejs/bin/import-release-team-keyring"
+      asdf plugin-add python
+      asdf plugin-add bazel https://github.com/rajatvig/asdf-bazel.git
+    fi
+
+    mkdir -p $GOPATH
+    
+    
     popd
     rm -Rf $working
 }

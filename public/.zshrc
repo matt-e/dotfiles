@@ -1,21 +1,34 @@
 zmodload zsh/zprof
 
-ZPLUG_ROOT=$HOME/.zplug
-
-# Essential
-if [[ ! -d $ZPLUG_ROOT ]]; then
-    git clone https://github.com/zplug/zplug $ZPLUG_ROOT
-    source $ZPLUG_ROOT/init.zsh && zplug update --self
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
-source $ZPLUG_ROOT/init.zsh
 
-export ZSH=$HOME/.zplug/repos/robbyrussell/oh-my-zsh
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+
+### End of Zinit's installer chunk
+
 export EDITOR=emacsclient
 
 autoload -U promptinit && promptinit
 autoload -U compinit compdef && compinit
 autoload colors && colors
-
+# autoload bashcompinit && bashcompinit
 
 # no c-s/c-q output freezing
 setopt noflowcontrol
@@ -67,48 +80,82 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 ENHANCD_DISABLE_DOT=1
 ENHANCD_FILTER=fzy
 
+# FIXME: machine specific
+
+export GOPATH=${HOME}/Snapchat/Dev/go
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/meddey/opt/miniconda2/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/meddey/opt/miniconda2/etc/profile.d/conda.sh" ]; then
+        . "/Users/meddey/opt/miniconda2/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/meddey/opt/miniconda2/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+AUTOSWITCH_SILENT=1
+
+
 # Case-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+zinit load "zsh-users/zsh-completions"
+zinit load "zsh-users/zsh-history-substring-search"
+zinit load "zsh-users/zsh-syntax-highlighting"
 
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting"
+# #zplug "zsh-users/zaw"
+# zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
+zinit load "bobsoppe/zsh-ssh-agent"
+#zinit ice git
+# zinit snippet OMZ::plugins/asdf
+zinit snippet PZT::modules/osx
+# zinit snippet OMZ::plugins/bazel
+zinit snippet OMZ::plugins/brew
+zinit snippet OMZ::plugins/git
+zinit snippet OMZ::plugins/ruby
+zinit snippet OMZ::plugins/python
+zinit snippet OMZ::plugins/virtualenv
+#zinit snippet OMZ::plugins/pyenv
+#zinit snippet OMZ::plugins/virtualenvwrapper
+zinit snippet OMZ::plugins/golang
+zinit snippet OMZ::plugins/colorize
+zinit snippet OMZ::plugins/gradle
+# zinit snippet OMZ::plugins/aws
 
-#zplug "zsh-users/zaw"
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
-zplug "bobsoppe/zsh-ssh-agent"
-zplug "plugins/brew", from:oh-my-zsh
-zplug "plugins/brew-cask", from:oh-my-zsh
-zplug "plugins/git",   from:oh-my-zsh
-#zplug "plugins/rbenv",   from:oh-my-zsh # 500ms
-zplug "plugins/ruby",   from:oh-my-zsh
-zplug "plugins/python",   from:oh-my-zsh
-zplug "plugins/virtualenv",   from:oh-my-zsh
-zplug "plugins/virtualenvwrapper",   from:oh-my-zsh
-zplug "plugins/golang",   from:oh-my-zsh
-zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-zplug "plugins/zsh_reload", from:oh-my-zsh
-zplug "plugins/colorize", from:oh-my-zsh
-zplug "b4b4r07/enhancd", use:init.sh
-zplug "supercrabtree/k"
-zplug "plugins/gradle", from:oh-my-zsh
-zplug "zuxfoucault/colored-man-pages_mod"
-zplug "littleq0903/gcloud-zsh-completion", use:src
-if [[ -d ${HOME}/.kube ]]; then
-    zplug "superbrothers/zsh-kubectl-prompt"
-    RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
-fi
+
+zinit pack"bgn-binary+keys" for fzf
+
+zinit load "b4b4r07/enhancd" #, use:init.sh
+zinit load "supercrabtree/k"
+zinit load "zuxfoucault/colored-man-pages_mod"
+zinit load "bckim92/zsh-autoswitch-conda"
+zinit load '_local/_path_functions'
+export asdf_dir=${HOME}/Snapchat/Dev/.asdf
+export ASDF_DATA_DIR="${asdf_dir}"
+zinit load '_local/asdf_loader'
+zinit load '_local/goenv'
+zinit load '_local/emacs-doom'
+zinit ice pick"zsh/fzf-zsh-completion.sh"
+zinit light 'lincheney/fzf-tab-completion'
+zinit ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
+zinit light ogham/exa
+alias ls=exa
+
 
 # Theme
-zplug romkatv/powerlevel10k, use:powerlevel10k.zsh-theme
-
-# Start zplug
-zplug check || zplug install
-zplug load # --verbose
+zinit ice wait'!' lucid atload'source ~/.p10k.zsh; _p9k_precmd' nocd
+zinit light romkatv/powerlevel10k
 
 . ${HOME}/.zsh.d/zshrc
 
 bindkey -e
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+#path-prepend ${HOME}/local/bin
+
+bindkey '^I' fzf_completion
+zstyle ':completion:*:*:aws' fzf-search-display true
+complete -C aws_completer aws
