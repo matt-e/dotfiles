@@ -5,5 +5,6 @@
 mkdir -p ${HOME}/local/bin
 mkdir -p ${HOME}/.config
 mkdir -p ${HOME}/.emacs.d
+mkdir -p ${HOME}/.zinit/plugins
 
-stow -Rv -t $HOME `ls -d */`
+stow -Rv -t $HOME $(ls -d */)
