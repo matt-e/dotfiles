@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 zmodload zsh/zprof
 
 ### Added by Zinit's installer
@@ -134,18 +136,13 @@ zinit load "supercrabtree/k"
 zinit load "zuxfoucault/colored-man-pages_mod"
 zinit load "bckim92/zsh-autoswitch-conda"
 zinit load '_local/_path_functions'
-export asdf_dir=${HOME}/Snapchat/Dev/.asdf
-export ASDF_DATA_DIR="${asdf_dir}"
-zinit load '_local/asdf_loader'
-zinit load '_local/goenv'
-zinit load '_local/emacs-doom'
+
+
 zinit ice pick"zsh/fzf-zsh-completion.sh"
 zinit light 'lincheney/fzf-tab-completion'
 zinit ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
 zinit light ogham/exa
 alias ls=exa
-
-
 # Theme
 zinit ice wait'!' lucid atload'source ~/.p10k.zsh; _p9k_precmd' nocd
 zinit light romkatv/powerlevel10k
@@ -153,8 +150,6 @@ zinit light romkatv/powerlevel10k
 . ${HOME}/.zsh.d/zshrc
 
 bindkey -e
-
-#path-prepend ${HOME}/local/bin
 
 bindkey '^I' fzf_completion
 zstyle ':completion:*:*:aws' fzf-search-display true

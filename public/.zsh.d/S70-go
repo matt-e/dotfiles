@@ -1,0 +1,3 @@
+# -*- sh -*-
+
+zinit load '_local/goenv'

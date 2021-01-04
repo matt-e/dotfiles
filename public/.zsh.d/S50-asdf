@@ -1,13 +1,3 @@
 # -*- sh -*-
 
-asdf_dir="${asdf_dir:-$HOME/.asdf}"
-
-if [[ -d $asdf_dir ]]; then
-    export ASDF_DIR=$asdf_dir
-    export ASDF_DATA_DIR=$asdf_dir
-
-  source $asdf_dir/asdf.sh
-  source $asdf_dir/completions/asdf.bash
-else
-  echo "ASDF not found at ${asdf_dir}!"
-fi
+zinit load '_local/asdf_loader'
