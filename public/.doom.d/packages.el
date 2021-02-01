@@ -54,4 +54,3 @@
 (unpin! lsp-mode)
 (package! conda)
 (package! protobuf-mode)
-(package! yaml-mode)

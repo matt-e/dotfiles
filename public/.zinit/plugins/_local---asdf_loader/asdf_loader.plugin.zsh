@@ -22,9 +22,10 @@ asdf_dir="${asdf_dir:-$HOME/.asdf}"
 if [[ -d $asdf_dir ]]; then
     export ASDF_DIR=$asdf_dir
 	export ASDF_DATA_DIR=$asdf_dir
-
+    #fpath=( ${asdf_dir} $fpath)
+    #autoload -Uz asdf
     source $asdf_dir/asdf.sh
-    fpath+=( ${asdf_dir}/completions )
+    fpath=( ${asdf_dir}/completions $fpath)
 else
     echo "ASDF not found at ${asdf_dir}"
 fi
