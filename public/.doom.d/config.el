@@ -54,3 +54,4 @@
 (map! :leader
       :desc "Duplicate line" "d" #'crux-duplicate-current-line-or-region)
 
+(setq read-process-output-max (* 10 1024 1024))
