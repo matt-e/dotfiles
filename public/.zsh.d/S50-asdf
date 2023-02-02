@@ -1,3 +1,9 @@
 # -*- sh -*-
 
-zinit load '_local/asdf_loader'
+#export asdf_dir=${DEVROOT}/.asdf
+#zinit load '_local/asdf_loader'
+
+export ASDF_DIR=$HOME/Snapchat/Dev/.asdf
+export asdf_dir=${ASDF_DIR}
+export ASDF_DATA_DIR=${ASDF_DIR}
+. ${ASDF_DIR}/asdf.sh

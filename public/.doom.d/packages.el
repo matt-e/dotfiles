@@ -49,8 +49,8 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
-(package! bazel-mode)
-(package! crux)
-(unpin! lsp-mode)
-(package! conda)
-(package! protobuf-mode)
+;(package! bazel-mode)
+;(package! crux)
+;(unpin! lsp-mode)
+;(package! conda)
+;(package! protobuf-mode)

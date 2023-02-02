@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "Matthew Eddey"
+      user-mail-address "meddey@snapchat.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -51,7 +51,24 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 (map! :leader
       :desc "Duplicate line" "d" #'crux-duplicate-current-line-or-region)
 
 (setq read-process-output-max (* 10 1024 1024))
+
+;; forge
+(with-eval-after-load 'forge
+  (push '("github.sc-corp.net" "github.sc-corp.net/api/v3" "github.sc-corp.net" forge-github-repository) forge-alist)
+)

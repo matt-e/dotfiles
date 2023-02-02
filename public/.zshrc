@@ -73,7 +73,7 @@ zinit load "zsh-users/zsh-history-substring-search"
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma/fast-syntax-highlighting
 
-zinit load asdf-vm/asdf
+#zinit load asdf-vm/asdf
 
 zinit load "bobsoppe/zsh-ssh-agent"
 # #zinit ice git
