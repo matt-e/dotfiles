@@ -6,7 +6,8 @@ export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || safe
 
 FZF_ROOT=${HOME}/.fzf/shell
 [ -d /usr/share/fzf ] && FZF_ROOT=/usr/share/fzf
-[ -d /usr/local/Cellar/fzf/0.21.1/shell ] && FZF_ROOT=/usr/local/Cellar/fzf/0.21.1/shell
+[ -d /usr/local/Cellar/fzf/0.37.0/shell ] && FZF_ROOT=/usr/local/Cellar/fzf/0.21.1/shell
+[ -d /opt/homebrew/Cellar/fzf/0.37.0/shell ] && FZF_ROOT=/opt/homebrew/Cellar/fzf/0.37.0/shell
 
 source ${FZF_ROOT}/key-bindings.zsh
 source ${FZF_ROOT}/completion.zsh

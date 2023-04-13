@@ -3,11 +3,11 @@
 function brew_cask {
     local package=$1
     shift 1
-    if brew cask ls --versions $package > /dev/null; then
+    if brew ls --cask --versions $package > /dev/null; then
       echo "$package already installed"
     else 
       echo "Installing $package"
-      brew cask install $package "$@"
+      brew install --cask $package "$@"
     fi
 }
 
@@ -47,7 +47,6 @@ function setup_new_machine {
 
     echo "setting up brew taps"
     brew tap d12frosted/emacs-plus
-    brew tap AdoptOpenJDK/openjdk
     brew tap homebrew/cask-fonts
 
     brew_pkg git 
@@ -56,29 +55,38 @@ function setup_new_machine {
     brew_pkg gpg 
     brew_pkg fd
     brew_pkg datamash
-    brew_pkg emacs-plus@28 --with-modern-icon-cg433n --with-jansson
-    brew_cask adoptopenjdk8
+    #brew_pkg emacs-plus@30 --with-nobu417-big-sur-icon --with-native-comp
+    brew_cask temurin
     brew_cask iterm2
     brew_cask font-hack-nerd-font
     brew_cask intellij-idea
-    brew_cask android-studio
+    #brew_cask android-studio
     brew_cask visual-studio-code
     brew_cask alfred
     brew_cask google-cloud-sdk
+    brew_cask authy
+    brew_cask tailscale
+    brew_cask dash
+    brew_cask openlens
     echo "Don't forget to run "
     echo "  gcloud init"
     echo "  gcloud components update"
     echo '  gcloud auth application-default login --scopes="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform"'
     brew_cask spotify
-    brew_pkg aws-cli
+    brew_pkg awscli
     brew_pkg kubectl
     brew_pkg aws-iam-authenticator
     brew_pkg fzf
     brew_pkg exa
     brew_pkg keychain
     brew_pkg tree
-    brew_pkg protoc
     brew_pkg protoc-gen-go
+    brew_pkg jq
+    brew_pkg ipmitool
+    brew_pkg watch
+    brew_pkg gawk
+    brew_pkg docker
+    brew_pkg colima
 
     if [ -f ~/.emacs.d/bin/doom ]; then
       echo "Doom emacs already installed"
@@ -99,12 +107,24 @@ function setup_new_machine {
       export ASDF_DATA_DIR=$DEVROOT/.asdf
       . $DEVROOT/.asdf/asdf.sh
       asdf plugin-add ruby
-      asdf plugin-add golang
       asdf plugin-add rust
       asdf plugin-add nodejs
       bash -c "$DEVROOT/.asdf/plugins/nodejs/bin/import-release-team-keyring"
       asdf plugin-add python
+      asdf plugin-add golang
+      asdf plugin-add python
       asdf plugin-add bazel https://github.com/rajatvig/asdf-bazel.git
+      asdf plugin-add direnv
+      asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp
+      asdf plugin add awscli
+      asdf plugin add amazon-ecr-credential-helper https://github.com/matt-e/asdf-amazon-ecr-credential-helper
+      asdf plugin-add kubectl https://github.com/asdf-community/asdf-kubectl.git
+      asdf plugin-add pre-commit
+      asdf plugin add shellcheck https://github.com/luizm/asdf-shellcheck.git
+      asdf plugin add shfmt https://github.com/luizm/asdf-shfmt.git
+      asdf plugin-add minikube https://github.com/alvarobp/asdf-minikube.git
+      asdf plugin-add tflint https://github.com/skyzyx/asdf-tflint
+      asdf plugin-add jq https://github.com/azmcode/asdf-jq
     fi
 
     mkdir -p $GOPATH

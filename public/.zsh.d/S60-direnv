@@ -1,6 +1,6 @@
 _direnv_hook() {
   trap -- '' SIGINT;
-  eval "$("${asdf_dir}/installs/direnv/2.23.1/bin/direnv" export zsh)";
+  eval "$("${asdf_dir}/installs/direnv/2.32.2/bin/direnv" export zsh)";
   trap - SIGINT;
 }
 typeset -ag precmd_functions;
